@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    
+    <div class="app">
+        <header class="app-header">
+            <div class="app-header-logo">
+                <div class="logo">
+                    <span class="logo-icon">
+                        <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+                    </span>
+                    <h1 class="logo-title">
+                        <span>AllMed</span>
+                        <span>Solutions</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="app-header-navigation">
+                <div class="tabs">
+                    <a href="#">
+                        Overview
+                    </a>
+                    <a href="#">
+                        Cards
+                    </a>
+                    <a href="#">
+                        Account
+                    </a>
+                    <a href="#">
+                        System
+                    </a>
+                    <a href="#">
+                        Business
+                    </a>
+                </div>
+            </div>
+            <div class="app-header-actions">
+                <button class="user-profile">
+                    <span>Fahad Razzaq</span>
+                    <span>
+                        <img src="./WhatsApp Image 2023-12-11 at 9.24.13 PM.jpeg" alt="">
+                    </span>
+                </button>
+                <div class="app-header-actions-buttons">
+                    <button class="icon-button large">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button class="icon-button large">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header-mobile">
+                <button class="icon-button large">
+                    <i class="fa-solid fa-list"></i>
+                </button>
+            </div>
+    
+        </header>
+        <div class="app-body">
+            <div class="app-body-navigation">
+                <nav class="navigation">
+                    <a href="#">
+                        <i class="fa-regular fa-window-restore"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <!--employee-->
+                    <div class="dropdown">
+                        <a href="#" id="employeeDropdown" class="emp">
+                          <i class="fa-regular fa-square-check"></i>
+                          <span>Employees</span>
+                        </a>
+                        <div class="dropdown-content" id="employeeDropdownContent">
+                          <a href="#">Add Employee</a>
+                          <a href="#">Update Employee</a>
+                       <a href="#">Show All Employees</a>                </div>
+                      </div>
+                      
+                    <a href="#">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span class="leave">Leave Management</span>
+                    </a>
+                    <a href="#" class="att">
+                        <i class="fa-solid fa-globe"></i>
+                        <span >Attendance</span>
+                    </a>
+                    <a href="#" class="att-c">
+                        <i class="fa-regular fa-clipboard"></i>
+                        <span >Client</span>
+                    </a>
+                </nav>
+                <footer class="footer">
+                    <h1>AllMed<small>©</small></h1>
+                    <div>
+                        AllMed ©<br />
+                        All Rights Reserved 2023
+                    </div>
+                </footer>
+            </div>
+            <div class="app-body-main-content">
+                <section class="service-section">
+                    <h2>Details</h2>
+                    <div class="service-section-header">
+                        <div class="search-field">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Account number">
+                        </div>
+                        <div class="dropdown-field">
+                            <select>
+                                
+                                <option>Work</option>
+                                <option>Home</option>
+                            </select>
+                            <i class="fa-solid fa-caret-down"></i>
+                        </div>
+                        <button class="flat-button">
+                            Search
+                        </button>
+                    </div>
+                    <div class="mobile-only">
+                        <button class="flat-button">
+                            Search
+                        </button>
+                    </div>
+                    <div class="tiles">
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-solid fa-diagram-project"></i>
+                                <h3>
+                                    <span>New Projects</span>
+                                    <span>102</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-solid fa-users"></i>
+                                <h3>
+                                    <span>New Customers</span>
+                                    <span>154</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-regular fa-circle-question"></i>
+                                <h3>
+                                    <span>Inquiry</span>
+                                    <span>524</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                                <h3>
+                                    <span>Earning</span>
+                                    <span>$2,453</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                    </div>
+                    <div class="service-section-footer">
+                        <p>Services are paid according to the current state of the currency.</p>
+                    </div>
+                </section>
+                <section class="transfer-section">
+                    <div class="transfer-section-header">
+                        <h2>Notice Board</h2>
+                        <div class="filter-options">
+                            <button class="icon-button">
+                                <i class="fa-solid fa-filter"></i>
+                            </button>
+                            
+                            <button class="icon-button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="transfers">
+                        <div class="transfer">
+                            <div class="transfer-logo">
+                               <img src="./Screenshot 2023-12-11 213210.png" alt="">
+                            </div>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt>Salmaan Arshad</dt>
+                                    <dd>Ensuring the highest standards of quality in our services is our priority. Your attention to detail and adherence to protocols are indispensable in maintaining our reputation.</dd>
+                                </div>
+                            </dl>
+                            
+                        </div>
+                        <div class="transfer">
+                            <div class="transfer-logo">
+                                <img src="./Screenshot 2023-12-11 213210.png" alt="">
+                            </div>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt>Zareen Khaan</dt>
+                                    <dd>Respect the confidentiality of sensitive information at all times. </dd>
+                                </div>
+                            </dl>
+                            
+                        </div>
+                        <div class="transfer">
+                            <div class="transfer-logo">
+                               <img src="./Screenshot 2023-12-11 213210.png" alt="">
+                            </div>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt>Abdul Zahid</dt>
+                                    <dd>Time is of the essence in our line of work. Punctuality in meeting deadlines and responsiveness to urgent matters are crucial.</dd>
+                                </div>
+                    </div>
+                </section>
+            </div>
+            
+                </section>
+            </div>
+        </div>
+    
+<div class="ShowAllEmployees">
+
+
+    <div class="app-container">
+        
+        <div class="app-content">
+          <div class="app-content-header">
+            <h1 class="app-content-headerText">Employees</h1>
+                <defs></defs>
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="app-content-actions">
+            <input class="search-bar" placeholder="Search Employee" type="text">
+            <div class="app-content-actions-wrapper">
+              
+              </div>
+              </button>
+            </div>
+          </div>
+          <div class="products-area-wrapper tableView">
+            <div class="products-header">
+              <div class="product-cell image">
+                No.
+              </div>
+              <div class="product-cell category">Name<button class="sort-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
+                </button></div>
+              <div class="product-cell status-cell">Status<button class="sort-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
+                </button></div>
+              <div class="product-cell sales">Email<button class="sort-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
+                </button></div>
+              <div class="product-cell stock">Phone<button class="sort-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
+                </button></div>
+              <div class="product-cell price">Salary<button class="sort-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
+                </button></div>
+            </div>
+            <div class="products-row">
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="product">
+                  <span>Ocean</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label"></span>Salman</div>
+              <div class="product-cell status-cell">
+                
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>11</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>36</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$560</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8a2l0Y2hlbnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Lou</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Sara</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status disabled">Disabled</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>6</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>46</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$710</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Yellow</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Fiza</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>61</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>56</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$360</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YmVkcm9vbXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Dreamy</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Mehar</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status disabled">Disabled</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>41</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>66</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$260</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8aW50ZXJpb3J8ZW58MHwwfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Boheme</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Bisma</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>32</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>40</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$350</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGludGVyaW9yfGVufDB8MHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Sky</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Faiqa</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status disabled">Disabled</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>22</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>44</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$160</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGludGVyaW9yfGVufDB8MHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Midnight</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Furniture</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>23</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>45</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$340</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8aW50ZXJpb3J8ZW58MHwwfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Boheme</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Furniture</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>32</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>40</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$350</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1511389026070-a14ae610a1be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGludGVyaW9yfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Palm</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Decoration</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>24</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>46</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$60</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1600494603989-9650cf6ddd3d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTV8fGludGVyaW9yfGVufDB8MHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Forest</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Living Room</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>41</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>16</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$270</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njd8fGludGVyaW9yfGVufDB8MHwwfHw%3D&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Sand</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Living Room</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status disabled">Disabled</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>52</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>16</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$230</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1533779283484-8ad4940aa3a8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8ODd8fGludGVyaW9yfGVufDB8MHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Autumn</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Decoration</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>21</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>46</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$252</div>
+            </div>
+            <div class="products-row">
+              <button class="cell-more-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+                <div class="product-cell image">
+                  <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8aW50ZXJpb3J8ZW58MHwwfDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="product">
+                  <span>Boheme</span>
+                </div>
+              <div class="product-cell category"><span class="cell-label">Category:</span>Furniture</div>
+              <div class="product-cell status-cell">
+                <span class="cell-label">Status:</span>
+                <span class="status active">Active</span>
+              </div>
+              <div class="product-cell sales"><span class="cell-label">Sales:</span>32</div>
+              <div class="product-cell stock"><span class="cell-label">Stock:</span>40</div>
+              <div class="product-cell price"><span class="cell-label">Price:</span>$350</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</div>
+<script src="./index.js"></script>
+</body>
+</html>

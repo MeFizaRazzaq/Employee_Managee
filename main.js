@@ -3,16 +3,15 @@ const path = require('path');
 const url = require('url');
 const sql = require('mssql');
 const { start } = require('repl');
-//const electronReload = require('electron-reload');
-
+const electronReload = require('electron-reload');
 
 //app.allowRendererProcessReuse = false; // Add this line
 
 //electronReload(__dirname + '/main.js');
 
-//process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'production';
 // Import electron-reload only in development
-/*
+
 if (process.env.NODE_ENV === 'development') {
   const electronReload = require('electron-reload');
 
@@ -22,7 +21,6 @@ if (process.env.NODE_ENV === 'development') {
     hardResetMethod: 'exit',
   });
 }
-*/
 
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform === 'darwin';
@@ -43,12 +41,12 @@ function createWindow() {
       preload: path.join(__dirname, 'Preload', 'preload.js'),
     }
   });
-  /*open devtool if in dev env
+  //open devtool if in dev env
   if(isDev){
     win.webContents.openDevTools();
-  }*/
+  }
 
-  win.loadFile(path.join(__dirname, './Renderer/index.html'));
+  win.loadFile(path.join(__dirname, './Renderer/login.html'));
 
   // validation query
   ipcMain.on('send-to-val', (event, data) => {
@@ -65,7 +63,7 @@ function createWindow() {
         //close current window
         win.close();
         //new main window
-        SecondWindow();
+        Dashboard();
         //end of else  
         }
           })
@@ -73,12 +71,13 @@ function createWindow() {
       console.error('Error:', error);
     });
   });
-        // Connect to MS SQL Server
+
+  // Connect to MS SQL Server
   const config = {
     user: 'fiza-Razzaq',
     password: 'Me_DB@1',
     server: 'DESKTOP-5KF684A',
-    database: 'ToDo',
+    database: 'Employee_Management',
     port: 1433,
     options: {
       //encrypt: true, // Use this if you're on Windows Azure
@@ -216,9 +215,9 @@ async function insertQuery(i,b,a){
   async function validateUser(u,p){
     
     try{
-      const result = await sql.query`SELECT *
-      FROM users
-      WHERE userName = ${u} AND userPass = ${p};
+      const result = await sql.query`SELECT firstName, lastName, password
+      FROM Employees
+      WHERE firstName = ${u} AND password = ${p};      
       `;
       console.log('Validate Query result:',result);
       return result.recordset;
@@ -230,7 +229,7 @@ async function insertQuery(i,b,a){
   }
 
   //create main form window
-  function SecondWindow(){
+  function Dashboard(){
     // Create a new window for the form.html
     const formWindow = new BrowserWindow({
       width: 800,
