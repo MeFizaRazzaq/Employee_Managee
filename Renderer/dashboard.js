@@ -29,6 +29,14 @@ fetchTotalEarning().then((data)=>{
     total.innerHTML = `$ ` +data;
 })
 
+//navigate to all employees
+const allemp=document.getElementById('allemp');
+allemp.addEventListener('click',async()=>{
+    fetchEmpScreen().then(()=>{
+        console.log("Screenn created!");
+    })
+});
+
   // Function to get data(total number of employees) request from the main process
 async function fetchTotalEmployee() {
     try {
@@ -72,3 +80,14 @@ async function fetchTotalEarning() {
         console.error('Error fetching no.of total Clients from main process:', error);
     }
 }
+
+// Function to get new all emp screen from the main process
+async function fetchEmpScreen() {
+    try {
+        const data = await EmployeeAPI.empScreen();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
+

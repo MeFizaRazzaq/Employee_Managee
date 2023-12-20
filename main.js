@@ -220,6 +220,13 @@ async function insertQuery(i,b,a){
       WHERE firstName = 'Fahad' AND password = 'admin@123';      
       `;
       console.log('Validate Query result:',result);
+      if(result.recordset!=""){
+        const time = await sql.query`
+        UPDATE Employees
+        SET logIn_Time = GETDATE()
+        WHERE password = 'admin@123'; 
+        `;
+      }
       return result.recordset;
     }
     catch(err)
@@ -307,6 +314,16 @@ async function insertQuery(i,b,a){
       .catch(error => {
       console.error('Error:', error);
       });
+    });
+
+    ipcMain.on('show-employee-screen', (event,args) => {
+      //console.log("IN Main");
+      try {
+        //Dashboard.close();
+        AllEmployees();
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
     });
     /*
       //response to ipce senddata
@@ -430,6 +447,9 @@ async function insertQuery(i,b,a){
       console.error('Error:', error);
       });
     });
+
+    //
+    
     /*
       //response to ipce senddata
       ipcMain.on('sql-showquery', (event,args) => {

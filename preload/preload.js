@@ -70,6 +70,14 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
       ipcRenderer.send('show-employee');
     });
   },
+  empScreen: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('EmployeeScreen', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-employee-screen');
+    });
+  },
 });
 
 // Expose an API to get data from main-Client table
@@ -101,6 +109,20 @@ contextBridge.exposeInMainWorld('PDetailsAPI', {
 
 // Expose an API to get data from main-Project table
 contextBridge.exposeInMainWorld('ProjectAPI', {
+  // Function to request data from the main process
+  numProjects: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('ProjectNumber', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-Projects');
+    });
+  },
+});
+
+
+//send caommand to create new all employee screen
+contextBridge.exposeInMainWorld('EmployeeeScreen', {
   // Function to request data from the main process
   numProjects: () => {
     return new Promise((resolve, reject) => {
