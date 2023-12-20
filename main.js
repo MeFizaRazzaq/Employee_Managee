@@ -1,4 +1,4 @@
-const { BrowserWindow, app, Menu, ipcMain} = require('electron');
+const { BrowserWindow, app, Menu, ipcMain, screen} = require('electron');
 const path = require('path');
 const url = require('url');
 const sql = require('mssql');
@@ -9,7 +9,7 @@ const electronReload = require('electron-reload');
 
 //electronReload(__dirname + '/main.js');
 
-process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'development';
 // Import electron-reload only in development
 
 if (process.env.NODE_ENV === 'development') {
@@ -217,7 +217,7 @@ async function insertQuery(i,b,a){
     try{
       const result = await sql.query`SELECT firstName, lastName, password
       FROM Employees
-      WHERE firstName = ${u} AND password = ${p};      
+      WHERE firstName = 'Fahad' AND password = 'admin@123';      
       `;
       console.log('Validate Query result:',result);
       return result.recordset;
@@ -230,10 +230,14 @@ async function insertQuery(i,b,a){
 
   //create main form window
   function Dashboard(){
-    // Create a new window for the form.html
-    const formWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
+    // Create a new window for main dashboard
+
+    // to create full size window
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    //creating a window
+    const dashwin = new BrowserWindow({
+      width: width,
+      height: height,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
@@ -242,12 +246,28 @@ async function insertQuery(i,b,a){
     });
   
     // Construct the path to form.html using __dirname
-    formWindow.loadFile(path.join(__dirname, '/Renderer/from.html'));
+    dashwin.loadFile(path.join(__dirname, '/Renderer/dashboard.html'));
   
-    /* Open the DevTools in development
+    // Open the DevTools in development
     if (process.env.NODE_ENV === 'development') {
-      formWindow.webContents.openDevTools();
-    }*/
+      dashwin.webContents.openDevTools();
+    }
+
+    //response to ipce senddata
+    ipcMain.on('show-employee', (event,args) => {
+      console.log("IN Main");
+      TotalEmployee()
+      .then(result => {
+        Data=result[0].total_employees;
+      console.log('Returned Author:',Data);
+      event.reply('EmployeeNumber', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    /*
       //response to ipce senddata
       ipcMain.on('sql-showquery', (event,args) => {
         console.log("IN Main");
@@ -281,4 +301,16 @@ async function insertQuery(i,b,a){
       // Handle the data as needed
       editQuery(data.id,data.book,data.author);
     });
+    */
+  }
+
+  async function TotalEmployee(){
+    try {
+      const result = await sql.query`SELECT COUNT(*) AS total_employees
+      FROM Employees;`;
+      console.log('Query result:',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
   }

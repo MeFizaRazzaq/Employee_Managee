@@ -59,3 +59,28 @@ contextBridge.exposeInMainWorld('validate', {
   },
 });
 
+// Expose an API to get data from main
+contextBridge.exposeInMainWorld('EmployeeAPI', {
+  // Function to request data from the main process
+  numEmpFromMain: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('EmployeeNumber', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-employee');
+    });
+  },
+});
+
+// Expose an API to get data from main
+contextBridge.exposeInMainWorld('ClientAPI', {
+  // Function to request data from the main process
+  numClientFromMain: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('ClientNumber', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-clients');
+    });
+  },
+});
