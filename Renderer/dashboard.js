@@ -12,7 +12,22 @@ document.getElementById("employeeDropdown").addEventListener("click", function()
     const totalEmp=document.getElementById('employee');
     totalEmp.innerHTML = data;
   });
+
+  fetchTotalClient().then((data)=>{
+    const totalClient= document.getElementById('customers');
+    totalClient.innerHTML = data;
+  })
   
+  //Project
+  fetchTotaProjects().then((data)=>{
+    const total= document.getElementById('Project');
+    total.innerHTML = data;
+})
+
+fetchTotalEarning().then((data)=>{
+    const total= document.getElementById('earn');
+    total.innerHTML = `$ ` +data;
+})
 
   // Function to get data(total number of employees) request from the main process
 async function fetchTotalEmployee() {
@@ -24,11 +39,33 @@ async function fetchTotalEmployee() {
     }
 }
 
-//customers
+
   // Function to get data(total number of employees) request from the main process
   async function fetchTotalClient() {
     try {
-        const data = await EmployeeAPI.numEmpFromMain();
+        const data = await ClientAPI.numClientFromMain();
+        console.log('Data received in the renderer process:', data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching no.of total Clients from main process:', error);
+    }
+}
+
+// Function to get data(total number of employees) request from the main process
+async function fetchTotaProjects() {
+    try {
+        const data = await ProjectAPI.numProjects();
+        console.log('Data received in the renderer process:', data);
+        return data;
+    } catch (error) {
+        console.error('Error fetching no.of total Clients from main process:', error);
+    }
+}
+
+// Function to get data(total number of employees) request from the main process
+async function fetchTotalEarning() {
+    try {
+        const data = await PDetailsAPI.totalEarn();
         console.log('Data received in the renderer process:', data);
         return data;
     } catch (error) {

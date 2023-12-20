@@ -228,7 +228,7 @@ async function insertQuery(i,b,a){
     }
   }
 
-  //create main form window
+  //create dashboard form window
   function Dashboard(){
     // Create a new window for main dashboard
 
@@ -253,20 +253,61 @@ async function insertQuery(i,b,a){
       dashwin.webContents.openDevTools();
     }
 
-    //response to ipce senddata
+    //response to ipc Total no. of Employees
     ipcMain.on('show-employee', (event,args) => {
-      console.log("IN Main");
+      //console.log("IN Main");
       TotalEmployee()
       .then(result => {
         Data=result[0].total_employees;
-      console.log('Returned Author:',Data);
-      event.reply('EmployeeNumber', Data);
+      //console.log('Returned Author:',Data);
+        event.reply('EmployeeNumber', Data);
       })
       .catch(error => {
       console.error('Error:', error);
       });
     });
 
+    //response to ipc Total no. of Clients
+    ipcMain.on('show-clients', (event,args) => {
+      //console.log("IN Main");
+      TotalClient()
+      .then(result => {
+        Data=result[0].total_clients;
+        console.log('Data in main:',Data);
+        event.reply('ClientNumber', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    //response to ipc Total no. of Projects
+    ipcMain.on('show-Projects', (event,args) => {
+      //console.log("IN Main");
+      TotalProjects()
+      .then(result => {
+        Data=result[0].total_project;
+        console.log('Data in main:',Data);
+        event.reply('ProjectNumber', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    //response to ipc Total no. of Earning
+    ipcMain.on('show-Earning', (event,args) => {
+      //console.log("IN Main");
+      TotalEarning()
+      .then(result => {
+        Data=result[0].total_earning;
+        console.log('Data in main:',Data);
+        event.reply('Earning', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
     /*
       //response to ipce senddata
       ipcMain.on('sql-showquery', (event,args) => {
@@ -313,4 +354,115 @@ async function insertQuery(i,b,a){
     } catch (err) {
       console.error('Error executing query:', err);
     }
+  }
+
+  async function TotalClient(){
+    try {
+      const result = await sql.query`SELECT COUNT(*) AS total_clients
+      FROM Clients;`;
+      console.log('Query result:',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+  async function TotalProjects(){
+    try {
+      const result = await sql.query`SELECT COUNT(*) AS total_project
+      FROM Projects;`;
+      console.log('Query result:',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+  //TotalEarning
+  async function TotalEarning(){
+    try {
+      const result = await sql.query`SELECT SUM(Cost) as total_earning 
+      FROM Project_Details;`;
+      console.log('Query result:',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+
+  //creating Employees window
+  //create main form window
+  function AllEmployees(){
+    // Create a new window for main dashboard
+
+    // to create full size window
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    //creating a window
+    const dashwin = new BrowserWindow({
+      width: width,
+      height: height,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: true,
+        preload: path.join(__dirname, 'Preload', 'preload.js'),
+      },
+    });
+  
+    // Construct the path to form.html using __dirname
+    dashwin.loadFile(path.join(__dirname, '/Renderer/allEmployee.html'));
+  
+    // Open the DevTools in development
+    if (process.env.NODE_ENV === 'development') {
+      dashwin.webContents.openDevTools();
+    }
+
+    
+    //response to ipc Total no. of Earning
+    ipcMain.on('show-Earning', (event,args) => {
+      //console.log("IN Main");
+      TotalEarning()
+      .then(result => {
+        Data=result[0].total_earning;
+        console.log('Data in main:',Data);
+        event.reply('Earning', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+    /*
+      //response to ipce senddata
+      ipcMain.on('sql-showquery', (event,args) => {
+        console.log("IN Main");
+        executeQuery()
+        .then(result => {
+        Data=result;
+        console.log('Returned Author:');
+        event.reply('test', Data);
+        })
+        .catch(error => {
+        console.error('Error:', error);
+        });
+      });
+
+         // Get data from index
+    ipcMain.on('send-to-main', (event, data) => {
+      // Handle the data as needed
+      insertQuery(data.id,data.book,data.author);
+    });
+
+    // Get dataid to be deleted from index
+    ipcMain.on('send-to-main-del', (event, data) => {
+      console.log('DEleted');
+      // Handle the data as needed
+      deleteQuery(data.id);
+    });
+    
+    //edit data
+    ipcMain.on('send-to-main-edit', (event, data) => {
+      console.log('Edit');
+      // Handle the data as needed
+      editQuery(data.id,data.book,data.author);
+    });
+    */
   }

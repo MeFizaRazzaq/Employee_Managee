@@ -850,7 +850,6 @@ button {
 }
 
 .ShowAllEmployees{
-  position: relative;
   top: 1200px;
   left: -800px;
   width: 100%;
@@ -1364,6 +1363,3 @@ button {
   
   .cell-label { opacity: 0.6; }
 }
-
-
-

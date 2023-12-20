@@ -72,7 +72,7 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
   },
 });
 
-// Expose an API to get data from main
+// Expose an API to get data from main-Client table
 contextBridge.exposeInMainWorld('ClientAPI', {
   // Function to request data from the main process
   numClientFromMain: () => {
@@ -81,6 +81,33 @@ contextBridge.exposeInMainWorld('ClientAPI', {
         resolve(data);
       });
       ipcRenderer.send('show-clients');
+    });
+  },
+});
+
+// Expose an API to get data from main-Project details table
+// Expose an API to get data from main-Project table
+contextBridge.exposeInMainWorld('PDetailsAPI', {
+  // Function to request data from the main process
+  totalEarn: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('Earning', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-Earning');
+    });
+  },
+});
+
+// Expose an API to get data from main-Project table
+contextBridge.exposeInMainWorld('ProjectAPI', {
+  // Function to request data from the main process
+  numProjects: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('ProjectNumber', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-Projects');
     });
   },
 });
