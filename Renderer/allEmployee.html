@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Employees</title>
     <link rel="stylesheet" href="./dash.css">
    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -14,7 +14,6 @@
 
 
     <div class="app-container">
-        
         <div class="app-content">
           <div class="app-content-header">
             <h1 class="app-content-headerText">Employees</h1>
@@ -24,12 +23,17 @@
             </button>
           </div>
           <div class="app-content-actions">
+            <div class="dropdown-field" style="left: 0px; bottom: 10px;">
+              <select class="drop" id="dropSelect" style="background-color: #101827;">
+                  <option class="dropopt">First Name</option>
+                  <option class="dropopt">Last Name</option>
+                  <option class="dropopt">DOB</option>
+                  <option class="dropopt">City</option>
+              </select>
+              <i class="fa-solid fa-caret-down"></i>
+          </div>
             <input class="search-bar" placeholder="Search Employee" type="text" id="search">
-            <div class="app-content-actions-wrapper">
-              
               </div>
-              </button>
-            </div>
           </div>
           <table class="products-area-wrapper tableView" id="table">
             <thead id="thead">
@@ -66,6 +70,7 @@
                 <!-- You can add more rows as needed -->
             </tbody>
         </table>
+        
       </div>
 
   </div>

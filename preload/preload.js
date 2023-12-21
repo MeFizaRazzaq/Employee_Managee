@@ -86,12 +86,12 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
       ipcRenderer.send('Emp-showquery');
     });
   },
-  search: (val) => {
+  search: (val,opt) => {
     return new Promise((resolve, reject) => {
       ipcRenderer.once('SearchedEmp', (event, data) => {
         resolve(data);
       });
-      ipcRenderer.send('searched-employee', {val});
+      ipcRenderer.send('searched-employee', {val,opt});
     });
   },
 });

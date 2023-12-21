@@ -464,7 +464,7 @@ async function insertQuery(i,b,a){
 
     ipcMain.on('searched-employee', (event,data) => {
       console.log("Search Employee",data);
-      SearchQuery(data.val).then(result => {
+      SearchQuery(data.val,data.opt).then(result => {
         // Handle or use the result here if needed
         event.reply('SearchedEmp', result);
         console.log(result);
@@ -527,13 +527,17 @@ async function insertQuery(i,b,a){
       // Handle the data as needed
       editQuery(data.id,data.book,data.author);
     });
+    
     */
   }
-  async function SearchQuery(v){
+  async function SearchQuery(v,o){
     try {
-      const result = await sql.query`
-      SELECT * FROM Employees WHERE firstName LIKE ${v+ '%'};`;
-     console.log('Query result:',result.recordset);
+      console.log('in query',v,o);
+      const str=`
+      SELECT * FROM Employees WHERE ${o} LIKE '${v}%';`;
+      console.log("queryString,",str);
+      const result = await sql.query(str);
+      console.log('Query result:',result.recordset);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);

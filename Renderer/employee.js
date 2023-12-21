@@ -1,6 +1,6 @@
 const tablebdy=document.getElementById('tbody');
-// Get the input element
-const searchInput = document.getElementById('search');
+const searchInput = document.getElementById('search');  // Get the input element
+const dropValue = document.getElementById('dropSelect');    //dropdown value
 //get all employee records
 fetchEmpScreen();
 
@@ -9,7 +9,17 @@ fetchEmpScreen();
 searchInput.addEventListener('input', function() {
     // Get the value entered into the input
     const inputValue = searchInput.value;
-    searchEmployee(inputValue);
+    var dropOpt=dropValue.value;
+    if(dropOpt=="First Name"){
+        dropOpt="firstName";
+    }else if(dropOpt=="Last Name"){
+        dropOpt="lastName";
+    }else if(dropOpt=="DOB"){
+        dropOpt="DOB";
+    }else if(dropOpt=="City"){
+        dropOpt="City";
+    }
+    searchEmployee(inputValue,dropOpt);
     // Log the value (or perform any other action)
     console.log(inputValue);
 });
@@ -81,9 +91,9 @@ function appendRecord(body,fn,ln,p,g){
     body.appendChild(productRow);
 }
 //seraching the employee list
-async function searchEmployee(fn){
+async function searchEmployee(fn,op){
     try {
-        const data = await EmployeeAPI.search(fn);
+        const data = await EmployeeAPI.search(fn,op);
         const emp=data;
         clearDivContent('tbody');
         for (let i = 0; i < data.length; i++) {
@@ -94,7 +104,7 @@ async function searchEmployee(fn){
         console.error('Error fetching data from main process:', error);
     }
 }
-clearDivContent(tablebdy);
+
 function clearDivContent(divId) {
     // Get the reference to the div
     const div = document.getElementById(divId);
