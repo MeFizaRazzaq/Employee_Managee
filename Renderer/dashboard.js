@@ -52,7 +52,7 @@ async function fetchTotalEmployee() {
   async function fetchTotalClient() {
     try {
         const data = await ClientAPI.numClientFromMain();
-        console.log('Data received in the renderer process:', data);
+        //console.log('Data received in the renderer process:', data);
         return data;
     } catch (error) {
         console.error('Error fetching no.of total Clients from main process:', error);
@@ -63,7 +63,7 @@ async function fetchTotalEmployee() {
 async function fetchTotaProjects() {
     try {
         const data = await ProjectAPI.numProjects();
-        console.log('Data received in the renderer process:', data);
+        //console.log('Data received in the renderer process:', data);
         return data;
     } catch (error) {
         console.error('Error fetching no.of total Clients from main process:', error);
@@ -74,7 +74,7 @@ async function fetchTotaProjects() {
 async function fetchTotalEarning() {
     try {
         const data = await PDetailsAPI.totalEarn();
-        console.log('Data received in the renderer process:', data);
+        //console.log('Data received in the renderer process:', data);
         return data;
     } catch (error) {
         console.error('Error fetching no.of total Clients from main process:', error);
@@ -90,4 +90,3 @@ async function fetchEmpScreen() {
         console.error('Error fetching data from main process:', error);
     }
 }
-

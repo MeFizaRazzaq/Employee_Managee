@@ -78,6 +78,22 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
       ipcRenderer.send('show-employee-screen');
     });
   },
+  requestEmpFromMain: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('AllEmp', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('Emp-showquery');
+    });
+  },
+  search: (val) => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('SearchedEmp', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('searched-employee', {val});
+    });
+  },
 });
 
 // Expose an API to get data from main-Client table

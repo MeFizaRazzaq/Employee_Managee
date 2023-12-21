@@ -162,8 +162,8 @@ app.whenReady().then(()=>{
 //execute query
 async function executeQuery() {
     try {
-      const result = await sql.query`SELECT * FROM Book`;
-      console.log('Query result:');
+      const result = await sql.query`SELECT * FROM Employees`;
+      //console.log('Query result:',result);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);
@@ -219,7 +219,7 @@ async function insertQuery(i,b,a){
       FROM Employees
       WHERE firstName = 'Fahad' AND password = 'admin@123';      
       `;
-      console.log('Validate Query result:',result);
+      //console.log('Validate Query result:',result);
       if(result.recordset!=""){
         const time = await sql.query`
         UPDATE Employees
@@ -280,7 +280,7 @@ async function insertQuery(i,b,a){
       TotalClient()
       .then(result => {
         Data=result[0].total_clients;
-        console.log('Data in main:',Data);
+        //console.log('Data in main:',Data);
         event.reply('ClientNumber', Data);
       })
       .catch(error => {
@@ -294,7 +294,7 @@ async function insertQuery(i,b,a){
       TotalProjects()
       .then(result => {
         Data=result[0].total_project;
-        console.log('Data in main:',Data);
+        //console.log('Data in main:',Data);
         event.reply('ProjectNumber', Data);
       })
       .catch(error => {
@@ -308,7 +308,7 @@ async function insertQuery(i,b,a){
       TotalEarning()
       .then(result => {
         Data=result[0].total_earning;
-        console.log('Data in main:',Data);
+        //console.log('Data in main:',Data);
         event.reply('Earning', Data);
       })
       .catch(error => {
@@ -366,7 +366,7 @@ async function insertQuery(i,b,a){
     try {
       const result = await sql.query`SELECT COUNT(*) AS total_employees
       FROM Employees;`;
-      console.log('Query result:',result.recordset);
+     //console.log('Query result:',result.recordset);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);
@@ -377,7 +377,7 @@ async function insertQuery(i,b,a){
     try {
       const result = await sql.query`SELECT COUNT(*) AS total_clients
       FROM Clients;`;
-      console.log('Query result:',result.recordset);
+      //console.log('Query result:',result.recordset);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);
@@ -388,7 +388,7 @@ async function insertQuery(i,b,a){
     try {
       const result = await sql.query`SELECT COUNT(*) AS total_project
       FROM Projects;`;
-      console.log('Query result:',result.recordset);
+      //console.log('Query result:',result.recordset);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);
@@ -399,7 +399,7 @@ async function insertQuery(i,b,a){
     try {
       const result = await sql.query`SELECT SUM(Cost) as total_earning 
       FROM Project_Details;`;
-      console.log('Query result:',result.recordset);
+      //console.log('Query result:',result.recordset);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);
@@ -440,7 +440,7 @@ async function insertQuery(i,b,a){
       TotalEarning()
       .then(result => {
         Data=result[0].total_earning;
-        console.log('Data in main:',Data);
+        //console.log('Data in main:',Data);
         event.reply('Earning', Data);
       })
       .catch(error => {
@@ -448,9 +448,52 @@ async function insertQuery(i,b,a){
       });
     });
 
+    //response to all employee senddata
+    ipcMain.on('Emp-showquery', (event,args) => {
+      console.log("All Employee");
+      executeQuery()
+      .then(result => {
+      Data=result;
+      //console.log('Employee:',Data);
+      event.reply('AllEmp', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    ipcMain.on('searched-employee', (event,data) => {
+      console.log("Search Employee",data);
+      SearchQuery(data.val).then(result => {
+        // Handle or use the result here if needed
+        event.reply('SearchedEmp', result);
+        console.log(result);
+    }).catch(err => {
+        console.error('Error from SearchQuery:', err);
+    });
+    });
+    
     //
     
     /*
+
+    ipcMain.on('searched-employee', (event, data) => {
+      // Handle the data as needed
+      //console.log("ON main-user: ",data);
+      validateUser(data.user,data.pass)
+      .then(result => {
+        if(result==""){
+          console.log("Undefined User or Password");
+          //alertError("Incorrect User or Password")
+        }
+        else{
+          console.log("Succesfully loged In");
+          }
+            })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
       //response to ipce senddata
       ipcMain.on('sql-showquery', (event,args) => {
         console.log("IN Main");
@@ -485,4 +528,14 @@ async function insertQuery(i,b,a){
       editQuery(data.id,data.book,data.author);
     });
     */
+  }
+  async function SearchQuery(v){
+    try {
+      const result = await sql.query`
+      SELECT * FROM Employees WHERE firstName LIKE ${v+ '%'};`;
+     console.log('Query result:',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
   }

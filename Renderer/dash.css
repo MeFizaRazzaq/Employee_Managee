@@ -28,8 +28,6 @@ body {
 	background-color: var(--c-gray-900);
 	color: var(--c-text-primary);
 	display: flex;
-	padding-top: 3vw;
-	padding-bottom: 3vw;
 	justify-content: center;
 	overflow-x: hidden;
 }
@@ -73,7 +71,7 @@ a {
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	left: 400px;
+	left: 3px;
 }
 
 .app-header {
