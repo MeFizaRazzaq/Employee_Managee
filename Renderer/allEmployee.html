@@ -11,7 +11,89 @@
 <body>
 
   <div class="ShowAllEmployees">
-
+    
+        <!-- Popup Form Container -->
+<div id="addEmployeePopup" class="popup">
+  <div class="popup-content">
+      <span class="close" id="closePopup">&times;</span>
+      <h2>Add Employee</h2>
+      <form id="employeeForm">
+          <div class="input-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" name="firstName" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" name="lastName" required>
+          </div>
+      
+          <div class="input-group" id="c">
+              <label for="Cnic">CNIC:</label><br>
+              <input type="text" id="cnic" name="Cnic" required>
+          </div>
+      
+          <div class="input-group" id="d">
+              <label for="DOB">Date of Birth:</label><br>
+              <input type="date" id="dob" name="DOB" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="gender">Gender:</label>
+              <div>
+              <input type="radio" id="male" name="Gender" value="male" required>
+              <label for="male">Male</label>
+              <input type="radio" id="female" name="Gender" value="female">
+              <label for="female">Female</label>
+              </div>
+          </div>
+      
+          <div class="input-group">
+              <label for="phone">Phone Number:</label>
+              <input type="tel" id="phone" name="PhoneNumber" required>
+          </div>
+      
+          <div class="input-group" id="e">
+              <label for="email">Email:</label><br>
+              <input type="email" id="email" name="Email" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="street">Street #:</label>
+              <input type="text" id="street" name="Adress_Strt" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="city">City:</label>
+              <input type="text" id="city" name="City" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="state">State:</label>
+              <input type="text" id="state" name="Adress_State" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="zip">ZIP Code:</label>
+              <input type="text" id="zip" name="ZIP" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="bankId">BankID:</label>
+              <input type="text" id="bankId" name="bankId" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required>
+          </div>
+      
+          <!-- Add more fields as needed -->
+          <button type="submit" class="flat-button" style="left: auto;top: 10px;" id="addbtn">Add Employee</button>
+      </form>
+      
+  </div>
+</div>
 
     <div class="app-container">
         <div class="app-content">
@@ -33,6 +115,7 @@
               <i class="fa-solid fa-caret-down"></i>
           </div>
             <input class="search-bar" placeholder="Search Employee" type="text" id="search">
+            <button class="flat-button" style="left: 0px;top: 15px;width: 100%;" id="addemp">Add a Employee</button>
               </div>
           </div>
           <table class="products-area-wrapper tableView" id="table">
@@ -64,6 +147,11 @@
                             <!-- SVG content for sorting -->
                         </button>
                     </th>
+                    <th class="product-cell price">Actions
+                      <button class="sort-button">
+                          <!-- SVG content for sorting -->
+                      </button>
+                  </th>
                 </tr>
             </thead>
             <tbody id="tbody">

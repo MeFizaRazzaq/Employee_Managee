@@ -94,6 +94,9 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
       ipcRenderer.send('searched-employee', {val,opt});
     });
   },
+  sendToMain: (data) => {
+    ipcRenderer.send('send-emp-main', {data});
+  },
 });
 
 // Expose an API to get data from main-Client table

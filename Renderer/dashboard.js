@@ -1,12 +1,4 @@
-document.getElementById("employeeDropdown").addEventListener("click", function() {
-    var dropdownContent = document.getElementById("employeeDropdownContent");
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-  
+//const { ftruncateSync } = require("node:original-fs");  
   fetchTotalEmployee().then((data)=>{
     const totalEmp=document.getElementById('employee');
     totalEmp.innerHTML = data;
@@ -28,31 +20,6 @@ fetchTotalEarning().then((data)=>{
     total.innerHTML = `$ ` +data;
 })
 
-//add employee screen
-const addpop=document.getElementById('addEmployeePopup');
-const addemp=document.getElementById('addemp');
-const closePopup = document.getElementById('closePopup');
-addemp.addEventListener('click',function(e) {
-    e.preventDefault(); // Prevent the default link behavior
-    addpop.style.display = 'grid';
-});
-
-// Close the popup when the close button is clicked
-closePopup.addEventListener('click', function() {
-    addEmployeePopup.style.display = 'none';
-});
-
-//form submittion
-const addbtn=document.getElementById('adbtn');
-
-//navigate to all employees
-const allemp=document.getElementById('allemp');
-allemp.addEventListener('click',async()=>{
-    fetchEmpScreen().then(()=>{
-        console.log("Screenn created!");
-    })
-});
-
   // Function to get data(total number of employees) request from the main process
 async function fetchTotalEmployee() {
     try {
@@ -63,6 +30,13 @@ async function fetchTotalEmployee() {
     }
 }
 
+//navigate to all employees
+const allemp=document.getElementById('allemp');
+allemp.addEventListener('click',async()=>{
+    fetchEmpScreen().then(()=>{
+        console.log("Screenn created!");
+    })
+});
 
   // Function to get data(total number of employees) request from the main process
   async function fetchTotalClient() {

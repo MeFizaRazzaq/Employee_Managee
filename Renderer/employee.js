@@ -25,6 +25,56 @@ searchInput.addEventListener('input', function() {
 });
 
 
+//add employee screen
+const addpop=document.getElementById('addEmployeePopup');
+const addemp=document.getElementById('addemp');
+const closePopup = document.getElementById('closePopup');
+addemp.addEventListener('click',function(e) {
+    e.preventDefault(); // Prevent the default link behavior
+    addpop.style.display = 'grid';
+});
+
+// Close the popup when the close button is clicked
+closePopup.addEventListener('click', function() {
+    addEmployeePopup.style.display = 'none';
+});
+
+//form submittion
+const addbtn=document.getElementById('addbtn');
+addbtn.addEventListener('click',function(e){
+    e.preventDefault();
+    // Get all the form input elements
+    const form = document.getElementById('employeeForm');
+    const formData = new FormData(form);
+
+    // Convert FormData to a plain object
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+        data[key] = value;
+    }
+    console.log("d in js:",data);
+    getID().then((d)=>{
+        console.log("id in js:",d);
+    }).catch((error) => {
+        console.error("Error fetching ID:", error);
+    });
+
+    addEmp(data);
+});
+
+
+
+//adding a const to update emloyee
+const UpdateEmp=document.getElementById('updemp');
+UpdateEmp.addEventListener('click',async()=>{
+    //addpop.style.display = 'grid';
+    //addbtn.innerHTML=`Update`;
+    //UpdateEmp(id).then(()=>{
+        //console.log("Screenn created!");
+    //})
+});
+
+
 
 // Function to get new all emp screen from the main process
 async function fetchEmpScreen() {
@@ -72,20 +122,34 @@ function appendRecord(body,fn,ln,p,g){
 
     
     const statusCell = document.createElement('td');
-    statusCell.className = 'product-cell status-cell';
+    statusCell.className = 'product-cell action-cell';
     const statusSpan = document.createElement('span');
     statusSpan.className = 'status active';
     statusSpan.textContent = 'Active';
     statusCell.appendChild(statusSpan);
 
+    //add edit and delete button
+    const actionCell = document.createElement('td');
+    actionCell.className = 'product-cell action-cell';
+    const updSpan = document.createElement('span');
+    updSpan.className = 'empbtn update';
+    updSpan.id= 'updbtn';
+    updSpan.textContent = 'Update';
+    actionCell.appendChild(updSpan);
+    const delSpan = document.createElement('span');
+    delSpan.className = 'empbtn delete';
+    delSpan.id= 'delbtn';
+    delSpan.textContent = 'Delete';
+    actionCell.appendChild(delSpan);
+    
     // Append cells to the row
     productRow.appendChild(imageCell);
     productRow.appendChild(categoryCell);
     productRow.appendChild(salesCell);
     productRow.appendChild(stockCell);
     productRow.appendChild(priceCell);
-    
     productRow.appendChild(statusCell);
+    productRow.appendChild(actionCell);
 
     // Append the row to the tbody
     body.appendChild(productRow);
@@ -116,24 +180,35 @@ function clearDivContent(divId) {
 }
 
 
-/*
+//send employee data to main
+function addEmp(d){
+    try {
+        EmployeeAPI.sendToMain(d);
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
 
-<table class="products-area-wrapper tableView">
-            <tbody>
-                <tr class="products-row">
-                    <td class="product-cell image">
-                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="product">
-                    </td>
-                    <td class="product-cell category">Fiza</td>
-                    <td class="product-cell sales">11</td>
-                    <td class="product-cell status-cell">
-                        <span class="status active">Active</span>
-                    </td>
-                    <td class="product-cell stock">36</td>
-                    <td class="product-cell price">$560</td>
-                </tr>
-                <!-- You can add more rows as needed -->
-            </tbody>
-        </table>
+//function to update employee
+async function UpdateEmployee(d){
+    
+}
 
-*/
+async function getID(){
+    try {
+        console.log("getID is working!");
+        const data = await EmployeeAPI.requestEmpFromMain();
+        var lastID="E001";
+        if(data.length==0){
+            return lastID;
+        }else{
+            let numericPart = parseInt(lastID.substring(1), 10);
+            numericPart++;
+            // Convert the incremented number back to string and pad with zeros
+            return 'E' + String(numericPart).padStart(3, '0');
+        }        
+        
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}

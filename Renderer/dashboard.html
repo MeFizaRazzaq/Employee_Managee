@@ -11,88 +11,6 @@
 <body>
     
     <div class="app">
-        <!-- Popup Form Container -->
-<div id="addEmployeePopup" class="popup">
-    <div class="popup-content">
-        <span class="close" id="closePopup">&times;</span>
-        <h2>Add Employee</h2>
-        <form id="employeeForm">
-            <div class="input-group">
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required>
-            </div>
-        
-            <div class="input-group" id="c">
-                <label for="cnic">CNIC:</label><br>
-                <input type="text" id="cnic" name="cnic" required>
-            </div>
-        
-            <div class="input-group" id="d">
-                <label for="dob">Date of Birth:</label><br>
-                <input type="date" id="dob" name="dob" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="gender">Gender:</label>
-                <div>
-                <input type="radio" id="male" name="gender" value="male" required>
-                <label for="male">Male</label>
-                <input type="radio" id="female" name="gender" value="female">
-                <label for="female">Female</label>
-                </div>
-            </div>
-        
-            <div class="input-group">
-                <label for="phone">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-        
-            <div class="input-group" id="e">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="street">Street #:</label>
-                <input type="text" id="street" name="street" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="city">City:</label>
-                <input type="text" id="city" name="city" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="state">State:</label>
-                <input type="text" id="state" name="state" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="zip">ZIP Code:</label>
-                <input type="text" id="zip" name="zip" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="bankId">BankID:</label>
-                <input type="text" id="bankId" name="bankId" required>
-            </div>
-        
-            <div class="input-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-        
-            <!-- Add more fields as needed -->
-            <button type="submit" class="flat-button" style="left: auto;top: 10px;" id="btn">Add Employee</button>
-        </form>
-        
-    </div>
-</div>
         <header class="app-header">
             <div class="app-header-logo">
                 <div class="logo">
@@ -158,24 +76,14 @@
                     <div class="dropdown">
                         <a href="#" id="employeeDropdown" class="emp">
                             <i class="fa-regular fa-square-check"></i>
-                            <span>Employees</span>
+                            <span id="allemp">Employees</span>
                         </a>
-                        <div class="dropdown-content" id="employeeDropdownContent">
-                            <a href="#" id="addemp">Add Employee</a>
-                            <a href="#">Update Employee</a>
-                            <a href="#" id="allemp">Show All Employees</a>                
-                    </div>
                         </div><br>
                         <div class="dropdown">
                             <a href="#" >
                                 <i class="fa-regular fa-clipboard"></i>
-                                <span>Clients</span>
+                                <span id="allClient">Clients</span>
                             </a>
-                            <div class="dropdown-content" id="employeeDropdownContent">
-                                <a href="#" id="addclient">Add Client</a>
-                                <a href="#">Update Client</a>
-                                <a href="#" id="allclient">Show All Clients</a>                
-                        </div>
                             </div>
                     <a href="#">
                         <i class="fa-regular fa-file-lines"></i>
@@ -273,7 +181,7 @@
                                 <i class="fa-solid fa-hand-holding-dollar"></i>
                                 <h3>
                                     <span>Earning</span>
-                                    <span id="">$2,453</span>
+                                    <span id="earn">$2,453</span>
                                 </h3>
                             </div>
                             <a href="#">

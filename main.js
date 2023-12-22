@@ -38,6 +38,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
+      contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
       preload: path.join(__dirname, 'Preload', 'preload.js'),
     }
   });
@@ -325,6 +326,15 @@ async function insertQuery(i,b,a){
         console.error('Error fetching data from main process:', error);
       }
     });
+    //to insert data
+    ipcMain.on('send-emp-main', (event,data) => {
+      //console.log("IN Main");
+      try {
+        insertEmployee(data);
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
     /*
       //response to ipce senddata
       ipcMain.on('sql-showquery', (event,args) => {
@@ -539,6 +549,15 @@ async function insertQuery(i,b,a){
       const result = await sql.query(str);
       console.log('Query result:',result.recordset);
       return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+  async function insertEmployee(d){
+    //send-emp-main
+    try {
+      console.log('in query',d);
     } catch (err) {
       console.error('Error executing query:', err);
     }
