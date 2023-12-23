@@ -55,17 +55,17 @@ addbtn.addEventListener('click',function(e){
     console.log("d in js:",data);
     getID().then((d)=>{
         console.log("id in js:",d);
+        addEmp(d,data);
     }).catch((error) => {
         console.error("Error fetching ID:", error);
     });
 
-    addEmp(data);
 });
 
 
 
 //adding a const to update emloyee
-const UpdateEmp=document.getElementById('updemp');
+/*const UpdateEmp=document.getElementById('updemp');
 UpdateEmp.addEventListener('click',async()=>{
     //addpop.style.display = 'grid';
     //addbtn.innerHTML=`Update`;
@@ -73,7 +73,7 @@ UpdateEmp.addEventListener('click',async()=>{
         //console.log("Screenn created!");
     //})
 });
-
+*/
 
 
 // Function to get new all emp screen from the main process
@@ -82,7 +82,7 @@ async function fetchEmpScreen() {
         const data = await EmployeeAPI.requestEmpFromMain();
         const emp=data;
         for (let i = 0; i < data.length; i++) {
-            appendRecord(tablebdy,emp[i].firstName,emp[i].lastName,emp[i].PhoneNumber,emp[i].Gender);
+            appendRecord(tablebdy,emp[i].Employee_Id,emp[i].firstName,emp[i].lastName,emp[i].PhoneNumber,emp[i].Gender);
         }        
         return data;
     } catch (error) {
@@ -90,7 +90,7 @@ async function fetchEmpScreen() {
     }
 }
 //appending the table rows
-function appendRecord(body,fn,ln,p,g){
+function appendRecord(body,i,fn,ln,p,g){
 
     // Create a row element for the product
     const productRow = document.createElement('tr');
@@ -141,7 +141,10 @@ function appendRecord(body,fn,ln,p,g){
     delSpan.id= 'delbtn';
     delSpan.textContent = 'Delete';
     actionCell.appendChild(delSpan);
-    
+    //add event listner to del btn
+    delSpan.addEventListener('click',()=>{
+        delEmpl(i);
+    })
     // Append cells to the row
     productRow.appendChild(imageCell);
     productRow.appendChild(categoryCell);
@@ -181,9 +184,9 @@ function clearDivContent(divId) {
 
 
 //send employee data to main
-function addEmp(d){
+function addEmp(i,d){
     try {
-        EmployeeAPI.sendToMain(d);
+        EmployeeAPI.sendToMain(i,d);
     } catch (error) {
         console.error('Error fetching data from main process:', error);
     }
@@ -194,20 +197,32 @@ async function UpdateEmployee(d){
     
 }
 
+//generate ID for each employee
 async function getID(){
     try {
-        console.log("getID is working!");
         const data = await EmployeeAPI.requestEmpFromMain();
-        var lastID="E001";
+        var lastID="";
+        console.log("getID is working!",data[data.length-1]);
         if(data.length==0){
+            var lastID="E0001";
             return lastID;
         }else{
+            lastID=data[data.length-1].Employee_Id;
             let numericPart = parseInt(lastID.substring(1), 10);
             numericPart++;
             // Convert the incremented number back to string and pad with zeros
             return 'E' + String(numericPart).padStart(3, '0');
         }        
         
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
+
+//delete the employee record
+function delEmpl(i){
+    try {
+        EmployeeAPI.sendToDel(i);
     } catch (error) {
         console.error('Error fetching data from main process:', error);
     }

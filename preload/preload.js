@@ -94,8 +94,19 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
       ipcRenderer.send('searched-employee', {val,opt});
     });
   },
-  sendToMain: (data) => {
-    ipcRenderer.send('send-emp-main', {data});
+  sendToMain: (id,data) => {
+    ipcRenderer.send('send-emp-main', {id,data});
+  },
+  sendToDel: (id) => {
+    ipcRenderer.send('send-delemp-main', {id});
+  },
+  sendToUpd: (id) => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('employeeupd', (event, data) => {
+        resolve(data);
+      });
+    ipcRenderer.send('send-updemp-main', {id});
+    });
   },
 });
 

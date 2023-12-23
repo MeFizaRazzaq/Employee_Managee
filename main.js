@@ -249,6 +249,7 @@ async function insertQuery(i,b,a){
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
+        contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
         preload: path.join(__dirname, 'Preload', 'preload.js'),
       },
     });
@@ -431,6 +432,7 @@ async function insertQuery(i,b,a){
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
+        contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
         preload: path.join(__dirname, 'Preload', 'preload.js'),
       },
     });
@@ -472,6 +474,7 @@ async function insertQuery(i,b,a){
       });
     });
 
+    //serach employee in the parameters passed on searched screen
     ipcMain.on('searched-employee', (event,data) => {
       console.log("Search Employee",data);
       SearchQuery(data.val,data.opt).then(result => {
@@ -482,9 +485,17 @@ async function insertQuery(i,b,a){
         console.error('Error from SearchQuery:', err);
     });
     });
-    
-    //
-    
+
+    // Get dataid to be deleted from index
+    ipcMain.on('send-delemp-main', (event, data) => {
+      DelRecord(data.id);
+      dashwin.reload();
+    });
+
+    //getid to be update and calling update function
+    ipcMain.on('send-updemp-main', (event, data) => {
+      UpdRecord(data.id);
+    });
     /*
 
     ipcMain.on('searched-employee', (event, data) => {
@@ -557,8 +568,58 @@ async function insertQuery(i,b,a){
   async function insertEmployee(d){
     //send-emp-main
     try {
-      console.log('in query',d);
+      const info=d.data;
+      console.log('in query',info);
+      const result = await sql.query`INSERT INTO Employees (Employee_Id, firstName, Adress_Strt, City, lastName, Adress_State, ZIP, Cnic, DOB, PhoneNumber, Gender, Email, Bank_Id, logIn_Time, logOut_Time, OfficeTime_Start, OfficeTime_End, Bonus, password) 
+      VALUES (
+        ${d.id},
+        ${info.firstName},
+        ${info.lastName},
+        ${info.Adress_Strt},
+        ${info.City},
+        ${info.Adress_State},
+        ${info.ZIP},
+        ${info.Cnic},
+        ${info.DOB},
+        ${info.PhoneNumber},
+        ${info.Gender},
+        ${info.Email},
+        ${info.bankId},
+        '09:00:00',
+        '18:00:00',
+        '17:00:00',
+        '03:00:00',
+        NULL,
+        ${info.password}
+    );`;
+    return result;
     } catch (err) {
       console.error('Error executing query:', err);
     }
   }
+
+  async function DelRecord(i){
+    table="Employees";
+    try {
+      const result = await sql.query`DELETE FROM Employees
+      WHERE Employee_Id = ${i};
+      ;`;
+    return result;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+  async function UpdRecord(i){
+    table="Employees";
+    try {
+      //const result = await sql.query`DELETE FROM ${table}
+      //WHERE Employee_Id = ${i};
+      //;`;
+      console.log("Updated to be!!");
+      //return result;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+  
