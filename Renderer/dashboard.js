@@ -38,6 +38,14 @@ allemp.addEventListener('click',async()=>{
     })
 });
 
+//navigate to Client Screen
+const client=document.getElementById('allClient');
+client.addEventListener('click',async()=>{
+    fetchclientScreen().then(()=>{
+        console.log("Screenn created!");
+    })
+});
+
   // Function to get data(total number of employees) request from the main process
   async function fetchTotalClient() {
     try {
@@ -75,6 +83,16 @@ async function fetchTotalEarning() {
 async function fetchEmpScreen() {
     try {
         const data = await EmployeeAPI.empScreen();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
+
+//clientScreen
+async function fetchclientScreen() {
+    try {
+        const data = await ClientAPI.clientScreen();
         return data;
     } catch (error) {
         console.error('Error fetching data from main process:', error);

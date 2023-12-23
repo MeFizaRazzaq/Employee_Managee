@@ -327,6 +327,16 @@ async function insertQuery(i,b,a){
         console.error('Error fetching data from main process:', error);
       }
     });
+    //ClientScreen
+    ipcMain.on('show-client-screen', (event,args) => {
+      //console.log("IN Main");
+      try {
+        //Dashboard.close();
+        ClientScreen();
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
     
     /*
       //response to ipce senddata
@@ -411,7 +421,6 @@ async function insertQuery(i,b,a){
 
 
   //creating Employees window
-  //create main form window
   function AllEmployees(){
     // Create a new window for main dashboard
 
@@ -500,61 +509,9 @@ async function insertQuery(i,b,a){
       UpdRecord(data);
       dashwin.reload();
     });
-    /*
 
-    ipcMain.on('searched-employee', (event, data) => {
-      // Handle the data as needed
-      //console.log("ON main-user: ",data);
-      validateUser(data.user,data.pass)
-      .then(result => {
-        if(result==""){
-          console.log("Undefined User or Password");
-          //alertError("Incorrect User or Password")
-        }
-        else{
-          console.log("Succesfully loged In");
-          }
-            })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    });
-      //response to ipce senddata
-      ipcMain.on('sql-showquery', (event,args) => {
-        console.log("IN Main");
-        executeQuery()
-        .then(result => {
-        Data=result;
-        console.log('Returned Author:');
-        event.reply('test', Data);
-        })
-        .catch(error => {
-        console.error('Error:', error);
-        });
-      });
-
-         // Get data from index
-    ipcMain.on('send-to-main', (event, data) => {
-      // Handle the data as needed
-      insertQuery(data.id,data.book,data.author);
-    });
-
-    // Get dataid to be deleted from index
-    ipcMain.on('send-to-main-del', (event, data) => {
-      console.log('DEleted');
-      // Handle the data as needed
-      deleteQuery(data.id);
-    });
-    
-    //edit data
-    ipcMain.on('send-to-main-edit', (event, data) => {
-      console.log('Edit');
-      // Handle the data as needed
-      editQuery(data.id,data.book,data.author);
-    });
-    
-    */
   }
+
   async function SearchQuery(v,o){
     try {
       console.log('in query',v,o);
@@ -646,3 +603,169 @@ async function insertQuery(i,b,a){
     }
   }
   
+    //creating Employees window
+    function ClientScreen(){
+      // Create a new window for main dashboard
+  
+      // to create full size window
+      const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+      //creating a window
+      const clientwin = new BrowserWindow({
+        width: width,
+        height: height,
+        webPreferences: {
+          nodeIntegration: true,
+          contextIsolation: true,
+          contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
+          preload: path.join(__dirname, 'Preload', 'preload.js'),
+        },
+      });
+    
+      // Construct the path to form.html using __dirname
+      clientwin.loadFile(path.join(__dirname, '/Renderer/Client.html'));
+    
+      // Open the DevTools in development
+      if (process.env.NODE_ENV === 'development') {
+        clientwin.webContents.openDevTools();
+      }
+
+      //response to all employee senddata
+    ipcMain.on('Client-showquery', (event,args) => { 
+      //console.log("All Clients!");
+      ClientQuery()
+      .then(result => {
+      Data=result;
+      //console.log('Client:',Data);
+      event.reply('AllClient', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    //searched-employee
+    //serach employee in the parameters passed on searched screen
+    ipcMain.on('searched-client', (event,data) => {
+      //console.log("Search Employee",data);
+      SearchClient(data.val,data.opt).then(result => {
+        // Handle or use the result here if needed
+        event.reply('Searchedclient', result);
+        console.log(result);
+    }).catch(err => {
+        console.error('Error from SearchQuery:', err);
+    });
+    });
+
+    //to add aclient send-client-main
+    ipcMain.on('send-client-main', (event, data) => {
+      insertClient(data);
+      console.log("CLient to insert: ",data);
+      clientwin.reload();
+    });
+
+    //send-delcli-main
+    ipcMain.on('send-delcli-main', (event, data) => {
+      console.log("In Main to Del:",data.id);
+      DelClient(data.id);
+      clientwin.reload();
+    });
+
+    //update
+    ipcMain.on('send-updcli-main', (event, data) => {
+      UpdClient(data);
+      console.log("CLient to insert: ",data);
+      clientwin.reload();
+    });
+
+    }
+
+    async function ClientQuery(){
+      try {
+        const result = await sql.query`SELECT * FROM Clients`;
+        //console.log('Query result:',result);
+        return result.recordset;
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+
+    //search client
+    async function SearchClient(v,o){
+      try {
+        console.log('in query',v,o);
+        const str=`
+        SELECT * FROM Clients WHERE ${o} LIKE '${v}%';`;
+        console.log("queryString,",str);
+        const result = await sql.query(str);
+        console.log('Query result:',result.recordset);
+        return result.recordset;
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+
+    //insert client
+    async function insertClient(d){
+      //send-emp-main
+      try {
+        const info=d.data;
+        console.log('in query',info);
+        const result = await sql.query`INSERT INTO Clients (Client_Id,firstName,lastName,Adress_Strt,City,Adress_State,ZIP,CNIC,DOB,PhoneNumber,Email,Organization,No_Individuals
+      ) 
+        VALUES (
+          ${d.id},
+          ${info.firstName},
+          ${info.lastName},
+          ${info.Adress_Strt},
+          ${info.City},
+          ${info.Adress_State},
+          ${info.ZIP},
+          ${info.CNIC},
+          ${info.DOB},
+          ${info.PhoneNumber},
+          ${info.Email},
+          ${info.Organization},
+          ${info.No_Individuals}
+      );`;
+      return result;
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+
+    async function DelClient(i){
+      //table="Employees";
+      try {
+        const result = await sql.query`DELETE FROM Clients
+        WHERE Client_Id = ${i};`;
+      return result;
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+  
+    async function UpdClient(d){
+      //table="Employees";
+      const info=d.data;
+      try {
+        const result = await sql.query`UPDATE Clients
+        SET 
+        firstName  = ${info.firstName},
+        lastName  = ${info.lastName},
+        Adress_Strt  = ${info.Adress_Strt},
+        City  = ${info.City},
+        Adress_State  = ${info.Adress_State},
+        ZIP  = ${info.ZIP},
+        CNIC  = ${info.CNIC},
+        DOB  = ${info.DOB},
+        PhoneNumber  = ${info.PhoneNumber},
+        Email  = ${info.Email},
+        Organization  = ${info.Organization},
+        No_Individuals  = ${info.No_Individuals}
+        WHERE Client_Id = ${info.clientIdKey};`;
+        console.log("Updated!!",info);
+        return result;
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }

@@ -117,6 +117,42 @@ contextBridge.exposeInMainWorld('ClientAPI', {
       ipcRenderer.send('show-clients');
     });
   },
+  clientScreen: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('ClientScreen', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-client-screen');
+    });
+  },
+  requestClientFromMain: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('AllClient', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('Client-showquery');
+    });
+  },
+  search: (val,opt) => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('Searchedclient', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('searched-client', {val,opt});
+    });
+  },
+  sendToMain: (id,data) => {
+    //console.log("Client in Preload: ",id,data);
+    ipcRenderer.send('send-client-main', {id,data});
+  },
+  sendToDel: (id) => {
+    console.log("Client to del: ",id);
+    ipcRenderer.send('send-delcli-main', {id});
+  },
+  sendToUpd: (data) => {
+    console.log("to update:",data);
+    ipcRenderer.send('send-updcli-main', {data});
+  },
 });
 
 // Expose an API to get data from main-Project details table

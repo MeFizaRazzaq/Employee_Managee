@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients</title>
+    <link rel="stylesheet" href="./dash.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <div class="ShowAllEmployees">
+    
+        
+  <div id="addClientPopup" class="popup">
+    <!--Client Screen-->
+    <div class="popup-content">
+        <span class="close" id="closePopup">&times;</span>
+        <h2>Add Client</h2>
+        <form id="clientForm">
+            <div class="input-group">
+                <label for="clifirstName">First Name:</label>
+                <input type="text" id="clifirstName" name="firstName" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="clilastName">Last Name:</label>
+                <input type="text" id="clilastName" name="lastName" required>
+            </div>
+        
+            <div class="input-group" id="c">
+                <label for="cliCnic">CNIC:</label><br>
+                <input type="text" id="clicnic" name="CNIC" placeholder="XXXXX-XXXXXXX-X" required>
+            </div>
+        
+            <div class="input-group" id="d">
+                <label for="cliDOB">Date of Birth:</label><br>
+                <input type="date" id="clidob" name="DOB"  required>
+            </div>
+        
+            <div class="input-group">
+                <label for="cliphone">Phone Number:</label>
+                <input type="tel" id="cliphone" name="PhoneNumber" placeholder="XXXX-XXXXXXX" required>
+            </div>
+        
+            <div class="input-group" id="e">
+                <label for="cliemail">Email:</label><br>
+                <input type="email" id="cliemail" name="Email"placeholder="abc@gamil.com" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="clistreet">Street #:</label>
+                <input type="text" id="clistreet" name="Adress_Strt" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="clicity">City:</label>
+                <input type="text" id="clicity" name="City" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="clistate">State:</label>
+                <input type="text" id="clistate" name="Adress_State" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="clizip">ZIP Code:</label>
+                <input type="text" id="clizip" name="ZIP" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="cliindividuals">Number of Individuals:</label>
+                <input type="text" id="cliindividuals" name="No_Individuals" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="cliorganization">Organization:</label>
+                <input type="text" id="cliorganization" name="Organization" required>
+            </div>
+        
+            <!-- Add more fields as needed -->
+            <button type="submit" class="flat-button" style="left: auto;top: 10px;" id="addbtncli">Add Client</button>
+        </form>        
+    </div>
+  </div>
+  <div class="app-container">
+    <div class="app-content">
+      <div class="app-content-header">
+        <h1 class="app-content-headerText">Clients</h1>
+            <defs></defs>
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="app-content-actions">
+        <div class="dropdown-field" style="left: 0px; bottom: 10px;">
+          <select class="drop" id="dropSelect" style="background-color: #101827;">
+              <option class="dropopt">First Name</option>
+              <option class="dropopt">Last Name</option>
+              <option class="dropopt">Organization</option>
+          </select>
+          <i class="fa-solid fa-caret-down"></i>
+      </div>
+        <input class="search-bar" placeholder="Search Employee" type="text" id="search">
+        <button class="flat-button" style="left: 0px;top: 15px;width: 100%;" id="addclient">Add a Client</button>
+          </div>
+      </div>
+      <table class="products-area-wrapper tableView" id="table">
+        <thead id="thead">
+            <tr class="products-header">
+                <th class="product-cell image">Profile Pic</th>
+                <th class="product-cell category">First Name
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell status-cell">Last Name
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell sales">Organization
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell stock">Phone
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell price">Projects
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell price">Actions
+                  <button class="sort-button">
+                      <!-- SVG content for sorting -->
+                  </button>
+              </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- You can add more rows as needed -->
+        </tbody>
+    </table>
+    
+  </div>
+<script src="./client.js"></script>
+</body>
+</html>
