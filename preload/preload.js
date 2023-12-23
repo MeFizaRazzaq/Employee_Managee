@@ -100,13 +100,9 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
   sendToDel: (id) => {
     ipcRenderer.send('send-delemp-main', {id});
   },
-  sendToUpd: (id) => {
-    return new Promise((resolve, reject) => {
-      ipcRenderer.once('employeeupd', (event, data) => {
-        resolve(data);
-      });
-    ipcRenderer.send('send-updemp-main', {id});
-    });
+  sendToUpd: (data) => {
+    console.log("to update:",data[0]);
+    ipcRenderer.send('send-updemp-main', {data});
   },
 });
 

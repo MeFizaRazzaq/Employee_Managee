@@ -327,15 +327,7 @@ async function insertQuery(i,b,a){
         console.error('Error fetching data from main process:', error);
       }
     });
-    //to insert data
-    ipcMain.on('send-emp-main', (event,data) => {
-      //console.log("IN Main");
-      try {
-        insertEmployee(data);
-      } catch (error) {
-        console.error('Error fetching data from main process:', error);
-      }
-    });
+    
     /*
       //response to ipce senddata
       ipcMain.on('sql-showquery', (event,args) => {
@@ -486,6 +478,17 @@ async function insertQuery(i,b,a){
     });
     });
 
+    //to insert data
+    ipcMain.on('send-emp-main', (event,data) => {
+      //console.log("IN Main");
+      try {
+        insertEmployee(data);
+        dashwin.reload();
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
+
     // Get dataid to be deleted from index
     ipcMain.on('send-delemp-main', (event, data) => {
       DelRecord(data.id);
@@ -494,7 +497,8 @@ async function insertQuery(i,b,a){
 
     //getid to be update and calling update function
     ipcMain.on('send-updemp-main', (event, data) => {
-      UpdRecord(data.id);
+      UpdRecord(data);
+      dashwin.reload();
     });
     /*
 
@@ -584,7 +588,7 @@ async function insertQuery(i,b,a){
         ${info.PhoneNumber},
         ${info.Gender},
         ${info.Email},
-        ${info.bankId},
+        ${info.Bank_Id},
         '09:00:00',
         '18:00:00',
         '17:00:00',
@@ -610,14 +614,33 @@ async function insertQuery(i,b,a){
     }
   }
 
-  async function UpdRecord(i){
-    table="Employees";
+  async function UpdRecord(emp){
+    //table="Employees";
+    const data=emp.data;
     try {
-      //const result = await sql.query`DELETE FROM ${table}
-      //WHERE Employee_Id = ${i};
-      //;`;
-      console.log("Updated to be!!");
-      //return result;
+      const result = await sql.query`UPDATE Employees
+      SET 
+      firstName  = ${data.firstName},
+      lastName  = ${data.lastName},
+      Adress_Strt  = ${data.Adress_Strt},
+      City  = ${data.City},
+      Adress_State  = ${data.Adress_State},
+      ZIP  = ${data.ZIP},
+      Cnic  = ${data.Cnic},
+      DOB  = ${data.DOB},
+      PhoneNumber  = ${data.PhoneNumber},
+      Gender  = ${data.Gender},
+      Email  = ${data.Email},
+      Bank_Id  = ${data.Bank_Id},
+      logIn_Time  = '09:00:00',
+      logOut_Time  = '18:00:00',
+      OfficeTime_Start  = '17:00:00',
+      OfficeTime_End  = '03:00:00',
+      Bonus  = NULL,
+      password  = ${data.password}
+      WHERE Employee_Id = ${data.empIdKey};`;
+      console.log("Updated!!",data);
+      return result;
     } catch (err) {
       console.error('Error executing query:', err);
     }

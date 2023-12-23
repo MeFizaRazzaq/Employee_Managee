@@ -28,41 +28,38 @@ searchInput.addEventListener('input', function() {
 //add employee screen
 const addpop=document.getElementById('addEmployeePopup');
 const addemp=document.getElementById('addemp');
+const addbtn=document.getElementById('addbtn');
 const closePopup = document.getElementById('closePopup');
 addemp.addEventListener('click',function(e) {
     e.preventDefault(); // Prevent the default link behavior
     addpop.style.display = 'grid';
+    //form submittion
+    addbtn.addEventListener('click',function(e){
+        e.preventDefault();
+        // Get all the form input elements
+        const form = document.getElementById('employeeForm');
+        const formData = new FormData(form);
+
+        // Convert FormData to a plain object
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        console.log("d in js:",data);
+        getID().then((d)=>{
+            console.log("id in js:",d);
+            addEmp(d,data);
+        }).catch((error) => {
+        console.error("Error fetching ID:", error);
+    });
+
+});
 });
 
 // Close the popup when the close button is clicked
 closePopup.addEventListener('click', function() {
     addEmployeePopup.style.display = 'none';
 });
-
-//form submittion
-const addbtn=document.getElementById('addbtn');
-addbtn.addEventListener('click',function(e){
-    e.preventDefault();
-    // Get all the form input elements
-    const form = document.getElementById('employeeForm');
-    const formData = new FormData(form);
-
-    // Convert FormData to a plain object
-    const data = {};
-    for (let [key, value] of formData.entries()) {
-        data[key] = value;
-    }
-    console.log("d in js:",data);
-    getID().then((d)=>{
-        console.log("id in js:",d);
-        addEmp(d,data);
-    }).catch((error) => {
-        console.error("Error fetching ID:", error);
-    });
-
-});
-
-
 
 //adding a const to update emloyee
 /*const UpdateEmp=document.getElementById('updemp');
@@ -82,7 +79,7 @@ async function fetchEmpScreen() {
         const data = await EmployeeAPI.requestEmpFromMain();
         const emp=data;
         for (let i = 0; i < data.length; i++) {
-            appendRecord(tablebdy,emp[i].Employee_Id,emp[i].firstName,emp[i].lastName,emp[i].PhoneNumber,emp[i].Gender);
+            appendRecord(tablebdy,emp[i]);
         }        
         return data;
     } catch (error) {
@@ -90,8 +87,7 @@ async function fetchEmpScreen() {
     }
 }
 //appending the table rows
-function appendRecord(body,i,fn,ln,p,g){
-
+function appendRecord(body,data){
     // Create a row element for the product
     const productRow = document.createElement('tr');
     productRow.className = 'products-row';
@@ -106,19 +102,19 @@ function appendRecord(body,i,fn,ln,p,g){
 
     const categoryCell = document.createElement('td');
     categoryCell.className = 'product-cell category';
-    categoryCell.textContent = fn;
+    categoryCell.textContent = data.firstName;
 
     const salesCell = document.createElement('td');
     salesCell.className = 'product-cell sales';
-    salesCell.textContent = ln;
+    salesCell.textContent = data.lastName;
 
     const stockCell = document.createElement('td');
     stockCell.className = 'product-cell stock';
-    stockCell.textContent = g;
+    stockCell.textContent = data.Gender;
 
     const priceCell = document.createElement('td');
     priceCell.className = 'product-cell price';
-    priceCell.textContent = p;
+    priceCell.textContent = data.PhoneNumber;
 
     
     const statusCell = document.createElement('td');
@@ -143,8 +139,12 @@ function appendRecord(body,i,fn,ln,p,g){
     actionCell.appendChild(delSpan);
     //add event listner to del btn
     delSpan.addEventListener('click',()=>{
-        delEmpl(i);
-    })
+        delEmpl(data.Employee_Id);
+    });
+    //add event listner to update
+    updSpan.addEventListener('click',()=>{
+        UpdateEmployee(data);
+    });
     // Append cells to the row
     productRow.appendChild(imageCell);
     productRow.appendChild(categoryCell);
@@ -182,7 +182,6 @@ function clearDivContent(divId) {
     }
 }
 
-
 //send employee data to main
 function addEmp(i,d){
     try {
@@ -194,7 +193,29 @@ function addEmp(i,d){
 
 //function to update employee
 async function UpdateEmployee(d){
-    
+    try {
+        addpop.style.display = 'grid';
+        populateFormFields(d);
+        addbtn.innerHTML=`Update Employee`;
+        
+        addbtn.addEventListener('click',function(e){
+            e.preventDefault();
+            // Get all the form input elements
+        const form = document.getElementById('employeeForm');
+        const formData = new FormData(form);
+
+        // Convert FormData to a plain object
+        const data = {};
+        data.empIdKey=d.Employee_Id;
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        console.log("in emp.js",data);
+            EmployeeAPI.sendToUpd(data);
+        });
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
 }
 
 //generate ID for each employee
@@ -225,5 +246,42 @@ function delEmpl(i){
         EmployeeAPI.sendToDel(i);
     } catch (error) {
         console.error('Error fetching data from main process:', error);
+    }
+}
+//to fill the fields in edit option
+function populateFormFields(d) {
+    for (let key in d) {
+        if (d.hasOwnProperty(key)) {
+            const element = document.querySelector(`[name="${key}"]`);
+            if (element) {
+                // Handle date input
+                if (element.type === 'date') {
+                    console.log(`Setting date for ${key}: ${d[key]}`);
+                    //element.value = d[key];
+                    const dateObj = d[key];
+
+                    const year = dateObj.getFullYear();
+                    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+                    const day = String(dateObj.getDate()).padStart(2, '0');
+
+                    const formattedDate = `${year}-${month}-${day}`;
+                    element.value=formattedDate;
+                }
+                // Handle radio buttons
+                else if (element.type === 'radio') {
+                    const radioGroup = document.querySelectorAll(`[name="${key}"]`);
+                    for (let radio of radioGroup) {
+                        if (radio.value === d[key]) {
+                            radio.checked = true;
+                            break;
+                        }
+                    }
+                }
+                // Handle other input types
+                else {
+                    element.value = d[key];
+                }
+            }
+        }
     }
 }
