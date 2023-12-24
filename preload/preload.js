@@ -54,8 +54,17 @@ contextBridge.exposeInMainWorld('editData', {
 //send-to-main-validate
 contextBridge.exposeInMainWorld('validate', {
   authenticateUser: (user,pass) => {
-    //console.log("Preload: ",user,pass);
-    ipcRenderer.send('send-to-val', {user,pass});
+      //console.log("Preload: ",user,pass);
+      ipcRenderer.send('send-to-val', {user,pass});
+  },
+  logOut: () => {
+    return new Promise((resolve, reject) => {
+    ipcRenderer.once('val', (event, data) => {
+      resolve(data);
+    });
+    //console.log("Preload: ",user);
+    ipcRenderer.send('send-to-out');
+});
   },
 });
 
@@ -192,6 +201,38 @@ contextBridge.exposeInMainWorld('EmployeeeScreen', {
         resolve(data);
       });
       ipcRenderer.send('show-Projects');
+    });
+  },
+});
+
+// Expose an API to get data from Application Management table
+contextBridge.exposeInMainWorld('AppAPI', {
+  AppScreen: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('ApplicationScreen', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-application-screen');
+    });
+  },
+  requestAppFromMain: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('AllApp', (event, data) => {
+        //console.log("APp in rendered:",data);
+        resolve(data);
+      });
+      ipcRenderer.send('App-showquery');
+    });
+  },
+  sendToMain: (id,status) => {
+    ipcRenderer.send('send-app-main', {id,status});
+  },
+  search: (data) => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('SearchedApp', (event, d) => {
+        resolve(d);
+      });
+      ipcRenderer.send('searched-app', {data});
     });
   },
 });

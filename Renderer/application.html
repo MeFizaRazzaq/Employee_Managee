@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications Management</title>
+    <link rel="stylesheet" href="./dash.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <div class="ShowAllEmployees">
+  <div class="app-container">
+    <div class="app-content">
+      <div class="app-content-header">
+        <h1 class="app-content-headerText">Applications</h1>
+            <defs></defs>
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="app-content-actions">
+        <form id="searchForm">   
+            <p style="color: #969593; text-align: left;">Search by Application Status:</p>
+            <div class="dropdown-field" style="left: 0px; bottom: 10px;">
+                <select class="drop" id="dropSelect" style="background-color: #101827;">
+                    <option class="dropopt">All</option>
+                    <option class="dropopt">Approved</option>
+                    <option class="dropopt">Rejected</option>
+                    <option class="dropopt">Pending</option>
+                </select>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            
+            <p style="color: #969593; text-align: left;">Search by Application Type:</p>
+            <input class="search-bar" placeholder="Enter Application Type" type="text" id="applicationType">
+            
+            <p style="color: #969593; text-align: left;">Search by Employee Name:</p>
+            <input class="search-bar" placeholder="Enter Employee Name" type="text" id="employeeName">
+            
+            <button class="flat-button" style="left: 0px;top: 15px;width: 100%;" type="button" id="searchButton">Search</button>
+        </form>
+      </div>
+</div>
+      <table class="products-area-wrapper tableView" id="table">
+        <thead id="thead">
+            <tr class="products-header">
+                <th class="product-cell status-cell">Name
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell sales">Type
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell stock">Reason
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell price">No.of Days
+                    <button class="sort-button">
+                        <!-- SVG content for sorting -->
+                    </button>
+                </th>
+                <th class="product-cell price">Actions
+                  <button class="sort-button">
+                      <!-- SVG content for sorting -->
+                  </button>
+              </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <!-- You can add more rows as needed -->
+        </tbody>
+    </table>
+    
+  </div>
+<script src="./application.js"></script>
+</body>
+</html>

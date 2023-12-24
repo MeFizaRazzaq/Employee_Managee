@@ -60,11 +60,12 @@ function createWindow() {
         //alertError("Incorrect User or Password")
       }
       else{
-        console.log("Succesfully loged In");
+        console.log("Succesfully loged In",result);
+        event.reply('val', result);
         //close current window
         win.close();
         //new main window
-        Dashboard();
+        Dashboard(result);
         //end of else  
         }
           })
@@ -214,21 +215,25 @@ async function insertQuery(i,b,a){
 
   //validation code
   async function validateUser(u,p){
-    
     try{
-      const result = await sql.query`SELECT firstName, lastName, password
+      const result = await sql.query`SELECT Employee_Id,firstName, password
       FROM Employees
-      WHERE firstName = 'Fahad' AND password = 'admin@123';      
+      WHERE firstName = ${u} AND password = ${p};      
       `;
       //console.log('Validate Query result:',result);
       if(result.recordset!=""){
+        const person=result.recordset[0];
+        console.log("Login Id: ",person.Employee_Id);
         const time = await sql.query`
-        UPDATE Employees
-        SET logIn_Time = GETDATE()
-        WHERE password = 'admin@123'; 
+        INSERT INTO EmployeeAttendance (Employee_Id, Date, Login_Time)
+        VALUES (${person.Employee_Id}, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME));
         `;
+        return person.Employee_Id;
+      }else if(result.recordset==""){
+        console.error("INvalid Credential");
+        return result.recordset;
       }
-      return result.recordset;
+      
     }
     catch(err)
     {
@@ -237,7 +242,7 @@ async function insertQuery(i,b,a){
   }
 
   //create dashboard form window
-  function Dashboard(){
+  function Dashboard(r){
     // Create a new window for main dashboard
 
     // to create full size window
@@ -338,41 +343,30 @@ async function insertQuery(i,b,a){
       }
     });
     
-    /*
-      //response to ipce senddata
-      ipcMain.on('sql-showquery', (event,args) => {
-        console.log("IN Main");
-        executeQuery()
-        .then(result => {
-        Data=result;
-        console.log('Returned Author:');
-        event.reply('test', Data);
-        })
-        .catch(error => {
-        console.error('Error:', error);
+    //to set logout time
+    ipcMain.on('send-to-out', (event,args) => {
+      //console.log("IN Main");
+      try {
+        //Dashboard.close();
+        setLogOut(r).then(()=>{
+          dashwin.close();
         });
-      });
-
-         // Get data from index
-    ipcMain.on('send-to-main', (event, data) => {
-      // Handle the data as needed
-      insertQuery(data.id,data.book,data.author);
+        
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
     });
 
-    // Get dataid to be deleted from index
-    ipcMain.on('send-to-main-del', (event, data) => {
-      console.log('DEleted');
-      // Handle the data as needed
-      deleteQuery(data.id);
+    //ApplicationScreen
+    ipcMain.on('show-application-screen', (event,args) => {
+      //console.log("IN Main");
+      try {
+        //Dashboard.close();
+        ApplicationScreen();
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
     });
-    
-    //edit data
-    ipcMain.on('send-to-main-edit', (event, data) => {
-      console.log('Edit');
-      // Handle the data as needed
-      editQuery(data.id,data.book,data.author);
-    });
-    */
   }
 
   async function TotalEmployee(){
@@ -769,3 +763,177 @@ async function insertQuery(i,b,a){
         console.error('Error executing query:', err);
       }
     }
+
+    async function setLogOut(a){
+      try {
+        const result = await sql.query`
+        UPDATE EmployeeAttendance
+        SET Logout_Time = GETDATE()
+        WHERE Employee_Id = ${a};`;
+      return result;
+      } catch (err) {
+        console.error('Error executing query:', err);
+      }
+    }
+
+    //creating Employees window
+  function ApplicationScreen(){
+    // Create a new window for main dashboard
+
+    // to create full size window
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    //creating a window
+    const appwin = new BrowserWindow({
+      width: width,
+      height: height,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: true,
+        contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
+        preload: path.join(__dirname, 'Preload', 'preload.js'),
+      },
+    });
+  
+    // Construct the path to form.html using __dirname
+    appwin.loadFile(path.join(__dirname, '/Renderer/application.html'));
+  
+    // Open the DevTools in development
+    if (process.env.NODE_ENV === 'development') {
+      appwin.webContents.openDevTools();
+    }
+
+    //response to all employee senddata
+    ipcMain.on('App-showquery', (event,args) => {
+      console.log("All Applications");
+      Appshow()
+      .then(result => {
+      Data=result;
+      //console.log('Employee:',Data);
+      event.reply('AllApp', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    //send-app-main
+    ipcMain.on('send-app-main', (event, data) => {
+      UpdStatus(data);
+      appwin.reload();
+    });
+    //searched-app
+    //serach employee in the parameters passed on searched screen
+    ipcMain.on('searched-app', (event,data) => {
+      //console.log("Search Employee",data);
+      SearchApp(data).then(result => {
+        // Handle or use the result here if needed
+        event.reply('SearchedApp', result);
+        console.log(result);
+    }).catch(err => {
+        console.error('Error from SearchQuery:', err);
+    });
+    });
+
+    //to insert data
+    ipcMain.on('send-emp-main', (event,data) => {
+      //console.log("IN Main");
+      try {
+        insertEmployee(data);
+        dashwin.reload();
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
+
+    // Get dataid to be deleted from index
+    ipcMain.on('send-delemp-main', (event, data) => {
+      DelRecord(data.id);
+      dashwin.reload();
+    });
+
+    //getid to be update and calling update function
+    ipcMain.on('send-updemp-main', (event, data) => {
+      UpdRecord(data);
+      dashwin.reload();
+    });
+
+  }
+
+  //Appshow
+  async function Appshow(){
+    try {
+      const result = await sql.query`
+      SELECT 
+    e.firstName,
+    a.Application_Id,
+    a.Application_Type,
+    a.Reason,
+    a.Note,
+    a.Apply_Date,
+    a.From_Date,
+    a.To_Date,
+    a.No_Application,
+    a.Application_Status,
+    a.Employee_Id
+FROM 
+    Application_Form a
+LEFT JOIN 
+    Employees e ON a.Employee_Id = e.Employee_Id;
+`;
+      //console.log('Query result in Appshow(main):',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+  //UpdStatus
+  async function UpdStatus(d){
+    try {
+      const result = await sql.query`
+      UPDATE Application_Form
+      SET Application_Status = ${d.status}
+      WHERE Application_Id = ${d.id};`;
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+  //search query to generate report SearchApp
+  //search client
+  async function SearchApp(v){
+    try {
+      console.log('in query',v);
+      const data=v.data;
+      let sqlQuery = `SELECT e.firstName, a.*
+      FROM Application_Form a
+      LEFT JOIN Employees e ON a.Employee_Id = e.Employee_Id
+      WHERE `;
+
+    let conditions = [];
+
+    // Check each field and add it to the conditions array if it's provided
+    if (data.Application_Status!="All") {
+        conditions.push(`a.Application_Status LIKE '${data.Application_Status}%'`);
+    }
+    if (data.Application_Type) {
+        conditions.push(`a.Application_Type LIKE '${data.Application_Type}%'`);
+    }
+    if (data.firstName) {
+        // Assuming you have a JOIN with the Employees table to get the first_name
+        conditions.push(`e.firstName LIKE '${data.firstName}%'`);
+    }
+
+    // Join the conditions using 'AND' to form the WHERE clause
+    sqlQuery += conditions.join(' AND ');
+
+    // Execute the SQL query or pass it to your database layer
+    console.log(sqlQuery); // For demonstration, logging the query to console
+      const result = await sql.query(sqlQuery);
+      console.log('Query result:',result.recordset);
+      return result.recordset;
+      
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }

@@ -2,17 +2,19 @@ const tablebdy=document.getElementById('tbody');
 const searchInput = document.getElementById('search');  // Get the input element
 const dropValue = document.getElementById('dropSelect');    //dropdown value
 
-
 //get all employee records
-fetchClientScreen();
+fetchAppScreen();
 
 // Function to get new all emp screen from the main process
-async function fetchClientScreen() {
+async function fetchAppScreen() {
+    //console.log("app:");
     try {
-        const data = await ClientAPI.requestClientFromMain();
-        const client=data;
+        const data = await AppAPI.requestAppFromMain();
+        const app=data;
+        //console.log("app:",app);
         for (let i = 0; i < data.length; i++) {
-            appendRecord(tablebdy,client[i]);
+            appendRecord(tablebdy,app[i]);
+            console.log("app:",app[i]);
         }        
         return data;
     } catch (error) {
@@ -22,6 +24,7 @@ async function fetchClientScreen() {
 
 //appending the table rows
 function appendRecord(body,data){
+    var status="Pending";
     // Create a row element for the product
     const productRow = document.createElement('tr');
     productRow.className = 'products-row';
@@ -36,62 +39,169 @@ function appendRecord(body,data){
 
     const categoryCell = document.createElement('td');
     categoryCell.className = 'product-cell category';
-    categoryCell.textContent = data.firstName;
+    categoryCell.textContent = 'firstName';
 
     const salesCell = document.createElement('td');
     salesCell.className = 'product-cell sales';
-    salesCell.textContent = data.lastName;
+    salesCell.textContent = data.firstName;
 
     const stockCell = document.createElement('td');
     stockCell.className = 'product-cell stock';
-    stockCell.textContent = data.Organization;
+    stockCell.textContent = data.Application_Type;
 
     const priceCell = document.createElement('td');
     priceCell.className = 'product-cell price';
-    priceCell.textContent = data.PhoneNumber;
+    priceCell.textContent = data.Reason;
 
+    //calcute no of days
+    const days=calculateDays(data.To_Date,data.From_Date);
     
     const statusCell = document.createElement('td');
     statusCell.className = 'product-cell action-cell';
-    statusCell.textContent = 'totalP';
+    statusCell.textContent = days;
 
+    //accepted Cell
+    const acceptCell = document.createElement('td');
+    acceptCell.className = 'product-cell action-cell';
+    const acpSpan = document.createElement('span');
+    acpSpan.className = 'empbtn update';
+    acpSpan.id= 'updbtn';
+    acpSpan.textContent = 'Accepted';
+    acceptCell.appendChild(acpSpan);
+    //rejected cell
+    const rejectCell = document.createElement('td');
+    rejectCell.className = 'product-cell action-cell';
+    const rejctSpan = document.createElement('span');
+    rejctSpan.className = 'empbtn delete';
+    rejctSpan.id= 'updbtn';
+    rejctSpan.textContent = 'Rejected';
+    rejectCell.appendChild(rejctSpan);
     //add edit and delete button
     const actionCell = document.createElement('td');
     actionCell.className = 'product-cell action-cell';
     const updSpan = document.createElement('span');
     updSpan.className = 'empbtn update';
     updSpan.id= 'updbtn';
-    updSpan.textContent = 'Update';
+    updSpan.textContent = 'Accept';
     actionCell.appendChild(updSpan);
     const delSpan = document.createElement('span');
     delSpan.className = 'empbtn delete';
     delSpan.id= 'delbtn';
-    delSpan.textContent = 'Delete';
+    delSpan.textContent = 'Reject';
     actionCell.appendChild(delSpan);
     //add event listner to del btn
     delSpan.addEventListener('click',()=>{
-        delClient(data.Client_Id);
+        status="Rejected";
+        changeStatus(data.Application_Id,status);
     });
     //add event listner to update
     updSpan.addEventListener('click',()=>{
-        UpdateClient(data);
+        status="Approved";
+        changeStatus(data.Application_Id,status);
     });
-    // Append cells to the row
-    productRow.appendChild(imageCell);
-    productRow.appendChild(categoryCell);
-    productRow.appendChild(salesCell);
-    productRow.appendChild(stockCell);
-    productRow.appendChild(priceCell);
-    productRow.appendChild(statusCell);
-    productRow.appendChild(actionCell);
+    console.log("Status:",data.Application_Status);
+    if(data.Application_Status=="Pending"){
+        productRow.appendChild(salesCell);
+        productRow.appendChild(stockCell);
+        productRow.appendChild(priceCell);
+        productRow.appendChild(statusCell);
+        productRow.appendChild(actionCell);
+    }
+    else if(data.Application_Status=='Approved'){
+        productRow.appendChild(salesCell);
+        productRow.appendChild(stockCell);
+        productRow.appendChild(priceCell);
+        productRow.appendChild(statusCell);
+        productRow.appendChild(acceptCell);
+    }
+    else if(data.Application_Status=='Rejected'){
+        productRow.appendChild(salesCell);
+        productRow.appendChild(stockCell);
+        productRow.appendChild(priceCell);
+        productRow.appendChild(statusCell);
+        productRow.appendChild(rejectCell);
+    }
 
     // Append the row to the tbody
     body.appendChild(productRow);
 }
 
+//send employee data to main
+function changeStatus(i,s){
+    try {
+        console.log("status to be changed: ",i,s);
+        AppAPI.sendToMain(i,s);
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
+
+//calculateDays(t,f)
+function calculateDays(t,f){
+    // Convert the input values to Date objects
+    let fromDate = new Date(f);
+    let toDate = new Date(t);
+
+    // Calculate the time difference in milliseconds
+    let timeDifference = toDate.getTime() - fromDate.getTime();
+
+    // Calculate the number of days
+    let days = Math.floor(timeDifference / (1000 * 3600 * 24));
+
+    return days;
+}
+
+document.getElementById('searchButton').addEventListener('click', function() {
+    // Collect input values
+    let applicationStatus = document.getElementById('dropSelect').value;
+    let applicationType = document.getElementById('applicationType').value.trim();
+    let employeeName = document.getElementById('employeeName').value.trim();
+    
+    // Create a data array
+    let data = {
+        Application_Status: applicationStatus,
+        Application_Type: applicationType,
+        firstName: employeeName
+    };
+
+    
+    searchApp(data);
+
+    // You can now use the 'data' array to fetch or process data as needed
+    console.log(data);
+});
+
+//seraching the employee list
+async function searchApp(val){
+    try {
+        const data = await AppAPI.search(val);
+        const emp=data;
+        clearDivContent('tbody');
+        for (let i = 0; i < data.length; i++) {
+            appendRecord(tablebdy,emp[i]);
+        }        
+        return data;
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
+
+
+
+function clearDivContent(divId) {
+    // Get the reference to the div
+    const div = document.getElementById(divId);
+
+    // Remove all child elements of the div
+    while (div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+}
+/*
+
 //addclient
 
-//add client screen
+//add employee screen
 const addpop=document.getElementById('addClientPopup');
 const addclient=document.getElementById('addclient');
 const addbtn=document.getElementById('addbtncli');
@@ -144,30 +254,9 @@ searchInput.addEventListener('input', function() {
     console.log(inputValue);
 });
 
-//seraching the employee list
-async function searchClient(fn,op){
-    try {
-        const data = await ClientAPI.search(fn,op);
-        const emp=data;
-        clearDivContent('tbody');
-        for (let i = 0; i < data.length; i++) {
-            appendRecord(tablebdy,emp[i]);
-        }        
-        return data;
-    } catch (error) {
-        console.error('Error fetching data from main process:', error);
-    }
-}
 
-//send employee data to main
-function addEmp(i,d){
-    try {
-        console.log("Client passed to addEmp: ",i,d);
-        ClientAPI.sendToMain(i,d);
-    } catch (error) {
-        console.error('Error fetching data from main process:', error);
-    }
-}
+
+
 
 //generate ID for each employee
 async function getID(){
@@ -228,16 +317,6 @@ function delClient(i){
 }
 
 
-function clearDivContent(divId) {
-    // Get the reference to the div
-    const div = document.getElementById(divId);
-
-    // Remove all child elements of the div
-    while (div.firstChild) {
-        div.removeChild(div.firstChild);
-    }
-}
-
 //to fill the fields in edit option
 function populateFormFields(d) {
     for (let key in d) {
@@ -275,3 +354,5 @@ function populateFormFields(d) {
         }
     }
 }
+
+*/
