@@ -342,7 +342,16 @@ async function insertQuery(i,b,a){
         console.error('Error fetching data from main process:', error);
       }
     });
-    
+    //show-attendance-screen
+    ipcMain.on('show-attendance-screen', (event,args) => {
+      //console.log("IN Main");
+      try {
+        //Dashboard.close();
+        AttendanceScreen();
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
     //to set logout time
     ipcMain.on('send-to-out', (event,args) => {
       //console.log("IN Main");
@@ -930,6 +939,94 @@ LEFT JOIN
     // Execute the SQL query or pass it to your database layer
     console.log(sqlQuery); // For demonstration, logging the query to console
       const result = await sql.query(sqlQuery);
+      console.log('Query result:',result.recordset);
+      return result.recordset;
+      
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+      //creating Employees window
+  function AttendanceScreen(){
+    // Create a new window for main dashboard
+
+    // to create full size window
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    //creating a window
+    const attwin = new BrowserWindow({
+      width: width,
+      height: height,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: true,
+        contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
+        preload: path.join(__dirname, 'Preload', 'preload.js'),
+      },
+    });
+  
+    // Construct the path to form.html using __dirname
+    attwin.loadFile(path.join(__dirname, '/Renderer/attendance.html'));
+  
+    // Open the DevTools in development
+    if (process.env.NODE_ENV === 'development') {
+      attwin.webContents.openDevTools();
+    }
+
+    //show-attendance-screen
+
+
+    //response to all employee senddata
+    ipcMain.on('Att-showquery', (event,args) => {
+      console.log("All Applications");
+      Attshow()
+      .then(result => {
+      Data=result;
+      //console.log('Employee:',Data);
+      event.reply('AllAtt', Data);
+      })
+      .catch(error => {
+      console.error('Error:', error);
+      });
+    });
+
+    //serach employee in the parameters passed on searched screen
+    ipcMain.on('searched-att', (event,data) => {
+      //console.log("Search Employee",data);
+      SearchAtt(data).then(result => {
+        // Handle or use the result here if needed
+        event.reply('SearchedAtt', result);
+        console.log(result);
+    }).catch(err => {
+        console.error('Error from SearchQuery:', err);
+    });
+    });
+  }
+
+  //Appshow
+  async function Attshow(){
+    try {
+      const result = await sql.query`
+      EXEC GetAttendanceReport;
+      `;
+      //console.log('Query result in Appshow(main):',result.recordset);
+      return result.recordset;
+    } catch (err) {
+      console.error('Error executing query:', err);
+    }
+  }
+
+  //SearchAtt(data)
+  async function SearchAtt(v){
+    try {
+      
+      const date = new Date();
+      const data=v.data;
+      const month = date.getMonth() + 1;
+      let result = `EXEC GetAttendanceReport @firstNamePattern = '${data}%',@month=${month};  `
+      const query=`EXEC GetAttendanceReport @firstNamePattern = '${data}%',@month=${month};`;
+      console.log('in query',data,month);
+      console.log('query',query);
       console.log('Query result:',result.recordset);
       return result.recordset;
       

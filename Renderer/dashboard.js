@@ -55,10 +55,15 @@ application.addEventListener('click',async()=>{
 });
 
 //navigate to attendence screen
-//navigate to reports screen
+const attendence=document.getElementById("att");
+attendence.addEventListener('click',async()=>{
+    fetchAttScreen().then(()=>{
+        console.log("Attendance Screenn created!");
+    })
+});
 
   // Function to get data(total number of employees) request from the main process
-  async function fetchTotalClient() {
+    async function fetchTotalClient() {
     try {
         const data = await ClientAPI.numClientFromMain();
         //console.log('Data received in the renderer process:', data);
@@ -104,6 +109,16 @@ async function fetchEmpScreen() {
 async function fetchclientScreen() {
     try {
         const data = await ClientAPI.clientScreen();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data from main process:', error);
+    }
+}
+//Attendance Screen fetchAttScreen
+async function fetchAttScreen() {
+    console.log("Attendance Screen");
+    try {
+        const data = await AttAPI.AttScreen();
         return data;
     } catch (error) {
         console.error('Error fetching data from main process:', error);

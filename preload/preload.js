@@ -236,3 +236,27 @@ contextBridge.exposeInMainWorld('AppAPI', {
     });
   },
 });
+
+// Expose an API to get data from Application Management table
+contextBridge.exposeInMainWorld('AttAPI', {
+  AttScreen: () => {
+    ipcRenderer.send('show-attendance-screen');
+  },
+  search: (data) => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('SearchedAtt', (event, d) => {
+        resolve(d);
+      });
+      ipcRenderer.send('searched-att', {data});
+    });
+  },
+  requestAttFromMain: () => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('AllAtt', (event, data) => {
+        //console.log("APp in rendered:",data);
+        resolve(data);
+      });
+      ipcRenderer.send('Att-showquery');
+    });
+  },
+});
