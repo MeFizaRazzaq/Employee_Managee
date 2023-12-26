@@ -90,6 +90,8 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
   requestEmpFromMain: () => {
     return new Promise((resolve, reject) => {
       ipcRenderer.once('AllEmp', (event, data) => {
+        
+    console.log("EMp1: ",data);
         resolve(data);
       });
       ipcRenderer.send('Emp-showquery');
@@ -104,6 +106,7 @@ contextBridge.exposeInMainWorld('EmployeeAPI', {
     });
   },
   sendToMain: (id,data) => {
+    console.log("EMp2: ",id,data);
     ipcRenderer.send('send-emp-main', {id,data});
   },
   sendToDel: (id) => {

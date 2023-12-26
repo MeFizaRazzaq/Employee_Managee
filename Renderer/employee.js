@@ -79,6 +79,7 @@ async function fetchEmpScreen() {
         const data = await EmployeeAPI.requestEmpFromMain();
         const emp=data;
         for (let i = 0; i < data.length; i++) {
+            console.log("emp:",emp[i]);
             appendRecord(tablebdy,emp[i]);
         }        
         return data;
@@ -185,11 +186,18 @@ function clearDivContent(divId) {
 //send employee data to main
 function addEmp(i,d){
     try {
+        console.log("empdata:",d.Skill);
+        const Skill= splitByComma(d.Skill);
+        d.Skill=Skill;
         EmployeeAPI.sendToMain(i,d);
     } catch (error) {
         console.error('Error fetching data from main process:', error);
     }
 }
+function splitByComma(str) {
+    // Split the string by comma and then filter out empty strings
+    return str.split(',').map(word => word.trim()).filter(Boolean);
+  }
 
 //function to update employee
 async function UpdateEmployee(d){

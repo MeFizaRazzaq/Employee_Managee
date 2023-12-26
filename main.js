@@ -42,10 +42,12 @@ function createWindow() {
       preload: path.join(__dirname, 'Preload', 'preload.js'),
     }
   });
+  /*
   //open devtool if in dev env
   if(isDev){
     win.webContents.openDevTools();
   }
+  */
 
   win.loadFile(path.join(__dirname, './Renderer/login.html'));
 
@@ -267,12 +269,12 @@ async function insertQuery(i,b,a){
   
     // Construct the path to form.html using __dirname
     dashwin.loadFile(path.join(__dirname, '/Renderer/dashboard.html'));
-  
+  /*
     // Open the DevTools in development
     if (process.env.NODE_ENV === 'development') {
       dashwin.webContents.openDevTools();
     }
-
+    */
     //response to ipc Total no. of Employees
     ipcMain.on('show-employee', (event,args) => {
       //console.log("IN Main");
@@ -449,12 +451,12 @@ async function insertQuery(i,b,a){
   
     // Construct the path to form.html using __dirname
     dashwin.loadFile(path.join(__dirname, '/Renderer/allEmployee.html'));
-  
+  /*
     // Open the DevTools in development
     if (process.env.NODE_ENV === 'development') {
       dashwin.webContents.openDevTools();
     }
-
+  */  
     
     //response to ipc Total no. of Earning
     ipcMain.on('show-Earning', (event,args) => {
@@ -501,7 +503,7 @@ async function insertQuery(i,b,a){
       //console.log("IN Main");
       try {
         insertEmployee(data);
-        dashwin.reload();
+        //dashwin.reload();
       } catch (error) {
         console.error('Error fetching data from main process:', error);
       }
@@ -540,7 +542,7 @@ async function insertQuery(i,b,a){
     try {
       const info=d.data;
       console.log('in query',info);
-      const result = await sql.query`INSERT INTO Employees (Employee_Id, firstName, Adress_Strt, City, lastName, Adress_State, ZIP, Cnic, DOB, PhoneNumber, Gender, Email, Bank_Id, logIn_Time, logOut_Time, OfficeTime_Start, OfficeTime_End, Bonus, password) 
+      const result = await sql.query`INSERT INTO Employees (Employee_Id, firstName, Adress_Strt, City, lastName, Adress_State, ZIP, Cnic, DOB, PhoneNumber, Gender, Email, Bank_Id, Bonus, password) 
       VALUES (
         ${d.id},
         ${info.firstName},
@@ -555,13 +557,22 @@ async function insertQuery(i,b,a){
         ${info.Gender},
         ${info.Email},
         ${info.Bank_Id},
-        '09:00:00',
-        '18:00:00',
-        '17:00:00',
-        '03:00:00',
         NULL,
         ${info.password}
     );`;
+    const skill=info.Skill;
+    for (let i = 0; i < skill.length; i++) {
+      console.log(skill[i]);
+      const skillRecord=await sql.query`
+      INSERT INTO Skills
+      VALUES(${d.id},${skill[i]});
+      ;`;
+    }
+    let i=1;
+    const PositionRecord=await sql.query`
+    INSERT INTO Positions
+    VALUES(${i++},${info.position_Name},${info.SalaryAmount},${d.id});
+    ;`;
     return result;
     } catch (err) {
       console.error('Error executing query:', err);
@@ -598,10 +609,6 @@ async function insertQuery(i,b,a){
       Gender  = ${data.Gender},
       Email  = ${data.Email},
       Bank_Id  = ${data.Bank_Id},
-      logIn_Time  = '09:00:00',
-      logOut_Time  = '18:00:00',
-      OfficeTime_Start  = '17:00:00',
-      OfficeTime_End  = '03:00:00',
       Bonus  = NULL,
       password  = ${data.password}
       WHERE Employee_Id = ${data.empIdKey};`;
@@ -632,11 +639,12 @@ async function insertQuery(i,b,a){
     
       // Construct the path to form.html using __dirname
       clientwin.loadFile(path.join(__dirname, '/Renderer/Client.html'));
-    
+    /*
       // Open the DevTools in development
       if (process.env.NODE_ENV === 'development') {
         clientwin.webContents.openDevTools();
       }
+      */
 
       //response to all employee senddata
     ipcMain.on('Client-showquery', (event,args) => { 
@@ -811,12 +819,12 @@ async function insertQuery(i,b,a){
   
     // Construct the path to form.html using __dirname
     appwin.loadFile(path.join(__dirname, '/Renderer/application.html'));
-  
+  /*
     // Open the DevTools in development
     if (process.env.NODE_ENV === 'development') {
       appwin.webContents.openDevTools();
     }
-
+*/
     //response to all employee senddata
     ipcMain.on('App-showquery', (event,args) => {
       console.log("All Applications");
@@ -974,11 +982,12 @@ LEFT JOIN
     // Construct the path to form.html using __dirname
     attwin.loadFile(path.join(__dirname, '/Renderer/attendance.html'));
   
+    /*
     // Open the DevTools in development
     if (process.env.NODE_ENV === 'development') {
       attwin.webContents.openDevTools();
     }
-
+    */
     //response to all employee senddata
     ipcMain.on('Att-showquery', (event,args) => {
       console.log("All Applications");
@@ -1059,11 +1068,7 @@ LEFT JOIN
       
         // Construct the path to form.html using __dirname
         empwin.loadFile(path.join(__dirname, '/Renderer/EmployeeDash.html'));
-      
-        // Open the DevTools in development
-        if (process.env.NODE_ENV === 'development') {
-          empwin.webContents.openDevTools();
-        }
+    
     
         //response to all employee senddata
         ipcMain.on('Att-showquery', (event,args) => {
