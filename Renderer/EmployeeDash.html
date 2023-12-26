@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./dash.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    
+    <div class="app">
+        <header class="app-header">
+            <div class="app-header-logo">
+                <div class="logo">
+                    <span class="logo-icon">
+                        <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+                    </span>
+                    <h1 class="logo-title">
+                        <span>AllMed</span>
+                        <span>Solutions</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="app-header-navigation">
+                <div class="tabs">
+                    <a href="#">
+                        Overview
+                    </a>
+                    <a href="#">
+                        Cards
+                    </a>
+                    <a href="#">
+                        Account
+                    </a>
+                    <a href="#">
+                        System
+                    </a>
+                    <a href="#">
+                        Business
+                    </a>
+                </div>
+            </div>
+            <div class="app-header-actions">
+                <button class="user-profile">
+                    <span>Fahad Razzaq</span>
+                    <span>
+                        <img src="../Assets/admindp.jpeg" alt="">
+                    </span>
+                </button>
+                <div class="app-header-actions-buttons">
+                    <button class="icon-button large">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button class="icon-button large">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header-mobile">
+                <button class="icon-button large">
+                    <i class="fa-solid fa-list"></i>
+                </button>
+            </div>
+    
+        </header>
+        <div class="app-body">
+            <div class="app-body-navigation">
+                <nav class="navigation">
+                    <a href="#">
+                        <i class="fa-regular fa-window-restore"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <!--employee-->
+                    <div class="dropdown">
+                        <a href="#" id="employeeDropdown" class="emp">
+                            <i class="fa-regular fa-square-check"></i>
+                            <span id="allemp">Projects</span>
+                        </a>
+                        </div>
+                    <a href="#">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span class="leave" id="app">Application Management</span>
+                    </a>
+                    <a href="#" class="att">
+                        <i class="fa-solid fa-globe"></i>
+                        <span id="att">Attendance</span>
+                    </a>
+                    <button class="flat-button" id="logOut" style="left: 0px; background-color: #e3ffa8;color: black;">Log Out</button>
+                </nav>
+                <footer class="footer">
+                    <h1>AllMed<small>©</small></h1>
+                    <div>
+                        AllMed ©<br />
+                        All Rights Reserved 2023
+                    </div>
+                </footer>
+            </div>
+            <div class="app-body-main-content">
+                <section class="service-section">
+                    <h2>Welcome!</h2>
+                    <div class="tiles">
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-solid fa-diagram-project"></i>
+                                <h3>
+                                    <span>Projects</span>
+                                    <span id="Project">102</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-solid fa-users"></i>
+                                <h3>
+                                    <span>Login Time</span>
+                                    <span id="customers">154</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                        <article class="tile">
+                            <div class="tile-header">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                                <h3>
+                                    <span>Salary</span>
+                                    <span id="earn">$2,453</span>
+                                </h3>
+                            </div>
+                            <a href="#">
+                                <span>See  Progress</span>
+                                <span class="icon-button">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </span>
+                            </a>
+                        </article>
+                    </div>
+                    <div class="service-section-footer">
+                        <p>Services are paid according to the current state of the currency.</p>
+                    </div>
+                </section>
+                <section class="transfer-section">
+                    <div class="transfer-section-header">
+                        <h2>Notice Board</h2>
+                        <div class="filter-options">
+                            <button class="icon-button">
+                                <i class="fa-solid fa-filter"></i>
+                            </button>
+                            
+                            <button class="icon-button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="transfers">
+                        <div class="transfer">
+                            <div class="transfer-logo">
+                               <img src="../Assets/Screenshot 2023-12-11 213210.png" alt="">
+                            </div>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt>Salmaan Arshad</dt>
+                                    <dd>Ensuring the highest standards of quality in our services is our priority. Your attention to detail and adherence to protocols are indispensable in maintaining our reputation.</dd>
+                                </div>
+                            </dl>
+                            
+                        </div>
+                        <div class="transfer">
+                            <div class="transfer-logo">
+                                <img src="../Assets/Screenshot 2023-12-11 213210.png" alt="">
+                            </div>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt>Zareen Khaan</dt>
+                                    <dd>Respect the confidentiality of sensitive information at all times. </dd>
+                                </div>
+                            </dl>
+                            
+                        </div>
+                        <div class="transfer">
+                            <div class="transfer-logo">
+                               <img src="../Assets/Screenshot 2023-12-11 213210.png" alt="">
+                            </div>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt>Abdul Zahid</dt>
+                                    <dd>Time is of the essence in our line of work. Punctuality in meeting deadlines and responsiveness to urgent matters are crucial.</dd>
+                                </div>
+                    </div>
+                </section>
+            </div>
+            
+                </section>
+            </div>
+        </div>
+    
+
+
+</div>
+<script src="./employeeDash.js"></script>
+</body>
+</html>

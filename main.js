@@ -64,8 +64,13 @@ function createWindow() {
         event.reply('val', result);
         //close current window
         win.close();
-        //new main window
-        Dashboard(result);
+        if(result=="admin"){
+          //new main window
+          Dashboard(result);
+        }else{
+          EmployeeDash(result);
+        }
+        
         //end of else  
         }
           })
@@ -216,9 +221,10 @@ async function insertQuery(i,b,a){
   //validation code
   async function validateUser(u,p){
     try{
-      const result = await sql.query`SELECT Employee_Id,firstName, password
-      FROM Employees
-      WHERE firstName = ${u} AND password = ${p};      
+      const result = await sql.query`SELECT e.Employee_Id, e.firstName, e.password, p.position_Name
+      FROM Employees e
+      RIGHT JOIN Positions p ON e.Employee_Id = p.Employee_Id
+      WHERE e.firstName = ${u} AND e.password = ${p};      
       `;
       //console.log('Validate Query result:',result);
       if(result.recordset!=""){
@@ -228,7 +234,7 @@ async function insertQuery(i,b,a){
         INSERT INTO EmployeeAttendance (Employee_Id, Date, Login_Time)
         VALUES (${person.Employee_Id}, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME));
         `;
-        return person.Employee_Id;
+        return person.position_Name;
       }else if(result.recordset==""){
         console.error("INvalid Credential");
         return result.recordset;
@@ -973,9 +979,6 @@ LEFT JOIN
       attwin.webContents.openDevTools();
     }
 
-    //show-attendance-screen
-
-
     //response to all employee senddata
     ipcMain.on('Att-showquery', (event,args) => {
       console.log("All Applications");
@@ -1034,3 +1037,57 @@ LEFT JOIN
       console.error('Error executing query:', err);
     }
   }
+
+  ///EmployeeDash
+      //creating Employees window
+      function EmployeeDash(v){
+        // Create a new window for main dashboard
+    
+        // to create full size window
+        const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+        //creating a window
+        const empwin = new BrowserWindow({
+          width: width,
+          height: height,
+          webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: true,
+            contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
+            preload: path.join(__dirname, 'Preload', 'preload.js'),
+          },
+        });
+      
+        // Construct the path to form.html using __dirname
+        empwin.loadFile(path.join(__dirname, '/Renderer/EmployeeDash.html'));
+      
+        // Open the DevTools in development
+        if (process.env.NODE_ENV === 'development') {
+          empwin.webContents.openDevTools();
+        }
+    
+        //response to all employee senddata
+        ipcMain.on('Att-showquery', (event,args) => {
+          console.log("All Applications");
+          Attshow()
+          .then(result => {
+          Data=result;
+          //console.log('Employee:',Data);
+          event.reply('AllAtt', Data);
+          })
+          .catch(error => {
+          console.error('Error:', error);
+          });
+        });
+    
+        //serach employee in the parameters passed on searched screen
+        ipcMain.on('searched-att', (event,data) => {
+          //console.log("Search Employee",data);
+          SearchAtt(data).then(result => {
+            // Handle or use the result here if needed
+            event.reply('SearchedAtt', result);
+            console.log(result);
+        }).catch(err => {
+            console.error('Error from SearchQuery:', err);
+        });
+        });
+      }
