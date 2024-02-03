@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees</title>
+    <link rel="stylesheet" href="./dash.css">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <div class="ShowAllEmployees">
+    
+        <!-- Popup Form Container -->
+<div id="addEmployeePopup" class="popup">
+  <div class="popup-content">
+      <span class="close" id="closePopup">&times;</span>
+      <h2>Add Employee</h2>
+      <form id="employeeForm">
+          <div class="input-group">
+              <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" name="firstName" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" name="lastName" required>
+          </div>
+      
+          <div class="input-group" id="c">
+              <label for="Cnic">CNIC:</label><br>
+              <input type="text" id="cnic" name="Cnic" required>
+          </div>
+      
+          <div class="input-group" id="d">
+              <label for="DOB">Date of Birth:</label><br>
+              <input type="date" id="dob" name="DOB" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="gender">Gender:</label>
+              <div>
+              <input type="radio" id="male" name="Gender" value="male" required>
+              <label for="male">Male</label>
+              <input type="radio" id="female" name="Gender" value="female">
+              <label for="female">Female</label>
+              </div>
+          </div>
+        <div class="input-group">
+            <label for="password">Skill:</label>
+            <input type="text" id="skill" name="Skill" required>
+        </div>
+          <div class="input-group">
+              <label for="phone">Phone Number:</label>
+              <input type="tel" id="phone" name="PhoneNumber" required>
+          </div>
+      
+          <div class="input-group" id="e">
+              <label for="email">Email:</label><br>
+              <input type="email" id="email" name="Email" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="street">Street #:</label>
+              <input type="text" id="street" name="Adress_Strt" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="city">City:</label>
+              <input type="text" id="city" name="City" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="state">State:</label>
+              <input type="text" id="state" name="Adress_State" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="zip">ZIP Code:</label>
+              <input type="text" id="zip" name="ZIP" required>
+          </div>
+      
+          <div class="input-group">
+              <label for="bankId">BankID:</label>
+              <input type="text" id="bankId" name="Bank_Id" required>
+          </div>
+
+          <div class="input-group">
+            <label for="bankId">Position:</label>
+            <input type="text" id="position" name="position_Name" required>
+        </div>
+
+        <div class="input-group">
+            <label for="bankId">Salary:</label>
+            <input type="text" id="salary" name="SalaryAmount" required>
+        </div>
+
+          <div class="input-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required>
+          </div>
+          <!-- Add more fields as needed -->
+          <button type="submit" class="flat-button" style="left: auto;top: 10px;" id="addbtn">Add Employee</button>
+      </form>
+      
+  </div>
+</div>
+
+    <div class="app-container">
+        <div class="app-content">
+          <div class="app-content-header">
+            <h1 class="app-content-headerText">Employees</h1>
+                <defs></defs>
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="app-content-actions">
+            <div class="dropdown-field" style="left: 0px; bottom: 10px;">
+              <select class="drop" id="dropSelect" style="background-color: #101827;">
+                  <option class="dropopt">First Name</option>
+                  <option class="dropopt">Last Name</option>
+                  <option class="dropopt">DOB</option>
+                  <option class="dropopt">City</option>
+              </select>
+              <i class="fa-solid fa-caret-down"></i>
+          </div>
+            <input class="search-bar" placeholder="Search Employee" type="text" id="search">
+            <button class="flat-button" style="left: 0px;top: 15px;width: 100%;" id="addemp">Add a Employee</button>
+              </div>
+          </div>
+          <table class="products-area-wrapper tableView" id="table">
+            <thead id="thead">
+                <tr class="products-header">
+                    <th class="product-cell image">Profile Pic</th>
+                    <th class="product-cell category">First Name
+                        <button class="sort-button">
+                            <!-- SVG content for sorting -->
+                        </button>
+                    </th>
+                    <th class="product-cell status-cell">Last Name
+                        <button class="sort-button">
+                            <!-- SVG content for sorting -->
+                        </button>
+                    </th>
+                    <th class="product-cell sales">Gender
+                        <button class="sort-button">
+                            <!-- SVG content for sorting -->
+                        </button>
+                    </th>
+                    <th class="product-cell stock">Phone
+                        <button class="sort-button">
+                            <!-- SVG content for sorting -->
+                        </button>
+                    </th>
+                    <th class="product-cell price">Status
+                        <button class="sort-button">
+                            <!-- SVG content for sorting -->
+                        </button>
+                    </th>
+                    <th class="product-cell price">Actions
+                      <button class="sort-button">
+                          <!-- SVG content for sorting -->
+                      </button>
+                  </th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- You can add more rows as needed -->
+            </tbody>
+        </table>
+        
+      </div>
+
+  </div>
+<script src="./employee.js"></script>
+</body>
+</html>

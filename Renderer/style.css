@@ -1,0 +1,51 @@
+body {
+    background-color: black; /* Setting the background of the entire screen to black */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.color-card {
+    background-color: #e3ffa8; /* Olive color for the card */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.color-card h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: black; /* Ensuring text color is black */
+}
+
+.color-card input[type="text"],
+.color-card input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.color-card button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffff80; /* Yellowish button */
+    border: none;
+    border-radius: 4px;
+    color: black;
+    cursor: pointer;
+}
+
+.color-card button:hover {
+    background-color: #ffff64; /* Olive color on hover */
+}
+
+.color-card h2,
+.color-card p {
+    color: black; /* Ensuring text color is black */
+}
+
