@@ -206,6 +206,22 @@ contextBridge.exposeInMainWorld('EmployeeeScreen', {
       ipcRenderer.send('show-Projects');
     });
   },
+  userinfo:() => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('user-info', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('show-user');
+    });
+  },
+  notice:(g) => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('notice-info', (event, data) => {
+        resolve(data);
+      });
+      ipcRenderer.send('send-notice',{g});
+    });
+  },
 });
 
 // Expose an API to get data from Application Management table

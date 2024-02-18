@@ -79,7 +79,7 @@ async function fetchEmpScreen() {
         const data = await EmployeeAPI.requestEmpFromMain();
         const emp=data;
         for (let i = 0; i < data.length; i++) {
-            console.log("emp:",emp[i]);
+            //console.log("emp:",emp[i]);
             appendRecord(tablebdy,emp[i]);
         }        
         return data;
@@ -109,6 +109,10 @@ function appendRecord(body,data){
     salesCell.className = 'product-cell sales';
     salesCell.textContent = data.lastName;
 
+    const pCell = document.createElement('td');
+    pCell.className = 'product-cell stock';
+    pCell.textContent = data.position_Name;
+
     const stockCell = document.createElement('td');
     stockCell.className = 'product-cell stock';
     stockCell.textContent = data.Gender;
@@ -117,12 +121,40 @@ function appendRecord(body,data){
     priceCell.className = 'product-cell price';
     priceCell.textContent = data.PhoneNumber;
 
-    
+    const office_Start= "05:00:00";
+    const office_End = "14:00:00";
+
     const statusCell = document.createElement('td');
     statusCell.className = 'product-cell action-cell';
     const statusSpan = document.createElement('span');
-    statusSpan.className = 'status active';
-    statusSpan.textContent = 'Active';
+
+    
+    if(data.Login_Time==null){
+        statusSpan.className = 'status disabled';
+        statusSpan.textContent = 'Absent';
+    }else if(data.Login_Time!=null){
+        console.log("da");
+    const login=formatTimeInHHmmss(data.Login_Time);
+    const logout=formatTimeInHHmmss(data.Logout_Time);
+        //at office time
+        if(login< office_Start){
+            statusSpan.className = 'status active';
+            statusSpan.textContent = 'Present';
+        }//after login time
+        else if(login > office_Start){
+            statusSpan.className = 'status active';
+            statusSpan.textContent = 'Late';
+        }//early logout
+        else if(logout < office_End){
+            statusSpan.className = 'status active';
+            statusSpan.textContent = 'Early Logout';
+        }//Logout
+        else if(logout > office_End){
+            statusSpan.className = 'status active';
+            statusSpan.textContent = 'LogOut';
+        }
+        
+    }
     statusCell.appendChild(statusSpan);
 
     //add edit and delete button
@@ -150,6 +182,7 @@ function appendRecord(body,data){
     productRow.appendChild(imageCell);
     productRow.appendChild(categoryCell);
     productRow.appendChild(salesCell);
+    productRow.appendChild(pCell);
     productRow.appendChild(stockCell);
     productRow.appendChild(priceCell);
     productRow.appendChild(statusCell);
@@ -165,7 +198,7 @@ async function searchEmployee(fn,op){
         const emp=data;
         clearDivContent('tbody');
         for (let i = 0; i < data.length; i++) {
-            appendRecord(tablebdy,emp[i].firstName,emp[i].lastName,emp[i].PhoneNumber,emp[i].Gender);
+            appendRecord(tablebdy,emp[i]);
         }        
         return data;
     } catch (error) {
@@ -291,5 +324,17 @@ function populateFormFields(d) {
                 }
             }
         }
+    }
+}
+
+function formatTimeInHHmmss(date) {
+    if(date){
+        const hours = String(date.getUTCHours()).padStart(2, '0');
+        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+        const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+    
+        return `${hours}:${minutes}:${seconds}`;}
+    else{
+        return null;
     }
 }

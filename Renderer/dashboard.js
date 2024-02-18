@@ -156,6 +156,6 @@ logoutbtn.addEventListener('click',async()=>{
         //return data;
         validate.logOut();
     } catch (error) {
-        console.error('Error fetching no.of total Clients from main process:', error);
+        console.error('Error in logout:', error);
     }
-})
+});

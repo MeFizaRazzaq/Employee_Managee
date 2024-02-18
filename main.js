@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
+
 const isDev = process.env.NODE_ENV !== 'development';
 const isMac = process.platform === 'darwin';
 
@@ -66,7 +67,7 @@ function createWindow() {
         event.reply('val', result);
         //close current window
         win.close();
-        if(result=="admin"){
+        if(result.position_Name=="admin" ||result.position_Name=="Admin"){
           //new main window
           Dashboard(result);
         }else{
@@ -83,9 +84,9 @@ function createWindow() {
 
   // Connect to MS SQL Server
   const config = {
-    user: 'fiza-Razzaq',
-    password: 'Me_DB@1',
-    server: 'DESKTOP-5KF684A',
+    user: 'FizaR',
+    password: 'Fiza@12345',
+    server: 'FAHADS\\SQLEXPRESS',
     database: 'Employee_Management',
     port: 1433,
     options: {
@@ -114,7 +115,7 @@ function createWindow() {
 //creat about window
 function createAboutWindow(){
   const aboutWindow= new BrowserWindow({
-    title: 'About Fav Book',
+    title: 'About Software',
     width: 300,
     height: 300,
   });
@@ -171,52 +172,13 @@ app.whenReady().then(()=>{
 //execute query
 async function executeQuery() {
     try {
-      const result = await sql.query`SELECT * FROM Employees`;
+      const result = await sql.query`SELECT * FROM Employees e 
+      RIGHT JOIN Positions p on e.Employee_Id = p.Employee_Id
+      LEFT JOIN EmployeeAttendance a ON e.Employee_Id = a.Employee_Id;`;
       //console.log('Query result:',result);
       return result.recordset;
     } catch (err) {
       console.error('Error executing query:', err);
-    }
-  }
-
-  //insert data into sql
-async function insertQuery(i,b,a){
-  try{
-    const result = await sql.query`insert into Book (ID,Author,Title)
-    values (${i},${a},${b});`;
-    return result;
-  }
-  catch(err)
-  {
-    console.error('Error executing Insert query:', err);
-  }
-}
-
-  //delete data into sql
-  async function deleteQuery(id){
-    try{
-      console.log('TO be Deleted', id);
-      const result = await sql.query`delete from Book
-      where id=${id}`;
-      return result;
-    }
-    catch(err)
-    {
-      console.error('Error executing Insert query:', err);
-    }
-  }
-
-  //edit query in sql
-  async function editQuery(num,b,a){
-    try{
-      const result = await sql.query`UPDATE Book
-      SET Author = ${a}, Title = ${b}
-      WHERE ID=${num}`;
-      return result;
-    }
-    catch(err)
-    {
-      console.error('Error executing Insert query:', err);
     }
   }
 
@@ -231,12 +193,19 @@ async function insertQuery(i,b,a){
       //console.log('Validate Query result:',result);
       if(result.recordset!=""){
         const person=result.recordset[0];
-        console.log("Login Id: ",person.Employee_Id);
-        const time = await sql.query`
+        console.log("Login Id: ",person);
+        const emp= await sql.query`
+        SELECT * FROM EmployeeAttendance WHERE Employee_Id = ${person.Employee_Id}
+        `;
+        console.log("att Id: ",emp.recordsets[0]);
+        if(emp.recordsets[0]==""){
+          const time = await sql.query`
         INSERT INTO EmployeeAttendance (Employee_Id, Date, Login_Time)
         VALUES (${person.Employee_Id}, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME));
         `;
-        return person.position_Name;
+        console.log("after att Id: ",time.recordsets[0]);
+        }
+        return person;
       }else if(result.recordset==""){
         console.error("INvalid Credential");
         return result.recordset;
@@ -289,7 +258,7 @@ async function insertQuery(i,b,a){
       });
     });
 
-    //response to ipc Total no. of Clients
+    //response to ipc Total no. of Clients val
     ipcMain.on('show-clients', (event,args) => {
       //console.log("IN Main");
       TotalClient()
@@ -364,9 +333,8 @@ async function insertQuery(i,b,a){
     ipcMain.on('send-to-out', (event,args) => {
       //console.log("IN Main");
       try {
-        //Dashboard.close();
         setLogOut(r).then(()=>{
-          dashwin.close();
+          //dashwin.close();
         });
         
       } catch (error) {
@@ -456,7 +424,7 @@ async function insertQuery(i,b,a){
     if (process.env.NODE_ENV === 'development') {
       dashwin.webContents.openDevTools();
     }
-  */  
+  */
     
     //response to ipc Total no. of Earning
     ipcMain.on('show-Earning', (event,args) => {
@@ -478,7 +446,7 @@ async function insertQuery(i,b,a){
       executeQuery()
       .then(result => {
       Data=result;
-      //console.log('Employee:',Data);
+      console.log('Employee:',Data);
       event.reply('AllEmp', Data);
       })
       .catch(error => {
@@ -568,10 +536,9 @@ async function insertQuery(i,b,a){
       VALUES(${d.id},${skill[i]});
       ;`;
     }
-    let i=1;
     const PositionRecord=await sql.query`
     INSERT INTO Positions
-    VALUES(${i++},${info.position_Name},${info.SalaryAmount},${d.id});
+    VALUES(${info.position_Name},${info.SalaryAmount},${d.id});
     ;`;
     return result;
     } catch (err) {
@@ -787,8 +754,10 @@ async function insertQuery(i,b,a){
       }
     }
 
-    async function setLogOut(a){
+    async function setLogOut(b){
       try {
+        let a = b.Employee_Id;
+        console.log("to be logout!!",a);
         const result = await sql.query`
         UPDATE EmployeeAttendance
         SET Logout_Time = GETDATE()
@@ -982,13 +951,13 @@ LEFT JOIN
     // Construct the path to form.html using __dirname
     attwin.loadFile(path.join(__dirname, '/Renderer/attendance.html'));
   
-    /*
+    
     // Open the DevTools in development
     if (process.env.NODE_ENV === 'development') {
       attwin.webContents.openDevTools();
     }
-    */
-    //response to all employee senddata
+    
+    //response to all employee senddata att Id
     ipcMain.on('Att-showquery', (event,args) => {
       console.log("All Applications");
       Attshow()
@@ -1063,36 +1032,81 @@ LEFT JOIN
             contextIsolation: true,
             contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
             preload: path.join(__dirname, 'Preload', 'preload.js'),
+            devTools: true ,
           },
         });
       
         // Construct the path to form.html using __dirname
         empwin.loadFile(path.join(__dirname, '/Renderer/EmployeeDash.html'));
     
+        // Open the DevTools in development
+    if (process.env.NODE_ENV === 'development') {
+      empwin.webContents.openDevTools();
+    }
     
         //response to all employee senddata
-        ipcMain.on('Att-showquery', (event,args) => {
-          console.log("All Applications");
-          Attshow()
+        ipcMain.on('show-user', (event,args) => {
+          //console.log("UI ");
+          user(v.Employee_Id)
           .then(result => {
           Data=result;
           //console.log('Employee:',Data);
-          event.reply('AllAtt', Data);
+          event.reply('user-info', Data);
           })
           .catch(error => {
           console.error('Error:', error);
           });
         });
     
-        //serach employee in the parameters passed on searched screen
-        ipcMain.on('searched-att', (event,data) => {
-          //console.log("Search Employee",data);
-          SearchAtt(data).then(result => {
-            // Handle or use the result here if needed
-            event.reply('SearchedAtt', result);
-            console.log(result);
-        }).catch(err => {
-            console.error('Error from SearchQuery:', err);
+        //to set logout time
+    ipcMain.on('send-to-out', (event,args) => {
+      //console.log("IN Main");
+      try {
+        setLogOut(v).then((r)=>{
+          console.log("IN Main logout",r);
+          //dashwin.close();
         });
-        });
+        
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
       }
+    });
+    //to add a notice
+    ipcMain.on('send-notice', (event,data) => {
+      //console.log("IN Main");
+      try {
+        notice(data.g,v.Employee_Id);
+        
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
+      }
+
+//get all info about current userr
+async function user(i){
+  try {
+    const result = await sql.query`SELECT * FROM Employees e 
+    RIGHT JOIN Positions p on e.Employee_Id = p.Employee_Id
+    lEFT JOIN EmployeeAttendance a ON e.Employee_Id = a.Employee_Id
+    WHERE e.Employee_Id=${i};
+    `;
+    return result.recordset;
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}
+
+//add a notice
+async function notice(n,e){
+  try {
+    console.log("notice",n,e);
+    const result = await sql.query`
+    INSERT INTO noticeBoard (Note, Employee_Id, dueDate)
+    VALUES(${n.notice},${e},${n.DOB});
+    `;
+    return result.recordset;
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}
