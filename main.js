@@ -197,14 +197,13 @@ async function executeQuery() {
         const emp= await sql.query`
         SELECT * FROM EmployeeAttendance WHERE Employee_Id = ${person.Employee_Id}
         `;
-        console.log("att Id: ",emp.recordsets[0]);
-        if(emp.recordsets[0]==""){
-          const time = await sql.query`
+        console.log("att Id: ",emp.recordsets);
+        const time = await sql.query`
         INSERT INTO EmployeeAttendance (Employee_Id, Date, Login_Time)
         VALUES (${person.Employee_Id}, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME));
         `;
-        console.log("after att Id: ",time.recordsets[0]);
-        }
+        console.log("after att Id: ",time.recordsets);
+  
         return person;
       }else if(result.recordset==""){
         console.error("INvalid Credential");
@@ -1050,7 +1049,7 @@ LEFT JOIN
           user(v.Employee_Id)
           .then(result => {
           Data=result;
-          //console.log('Employee:',Data);
+          console.log('Employee:',Data);
           event.reply('user-info', Data);
           })
           .catch(error => {
@@ -1086,10 +1085,10 @@ LEFT JOIN
 //get all info about current userr
 async function user(i){
   try {
-    const result = await sql.query`SELECT * FROM Employees e 
-    RIGHT JOIN Positions p on e.Employee_Id = p.Employee_Id
-    lEFT JOIN EmployeeAttendance a ON e.Employee_Id = a.Employee_Id
-    WHERE e.Employee_Id=${i};
+    const result = await sql.query`SELECT * FROM Employees e
+    INNER JOIN Positions p ON e.Employee_Id = p.Employee_Id
+    LEFT JOIN EmployeeAttendance a ON e.Employee_Id = a.Employee_Id AND CONVERT(DATE, a.Date) = CONVERT(DATE, GETDATE())
+    WHERE e.Employee_Id = ${i};
     `;
     return result.recordset;
   } catch (err) {

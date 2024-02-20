@@ -209,6 +209,7 @@ contextBridge.exposeInMainWorld('EmployeeeScreen', {
   userinfo:() => {
     return new Promise((resolve, reject) => {
       ipcRenderer.once('user-info', (event, data) => {
+        console.log("user info in preload",data);
         resolve(data);
       });
       ipcRenderer.send('show-user');

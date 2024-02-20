@@ -14,6 +14,7 @@ fetchEmp().then((d)=>{
     login.innerText= formatTimeInHHmmss(d.Login_Time);   
     projects.innerText= "To be developed" ;
     
+    console.log("date before:",d.Login_Time);
 }).catch((error) => {
 console.error("Error fetching ID:", error);
 }); 
@@ -89,6 +90,7 @@ function formatTimeInHHmmss(inputDate) {
         // Format the result in HH:MM:SS
         const result = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
+        console.log("date result:",result);
         return result;
     } catch (error) {
         return "Invalid date or format";
