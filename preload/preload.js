@@ -209,7 +209,7 @@ contextBridge.exposeInMainWorld('EmployeeeScreen', {
   userinfo:() => {
     return new Promise((resolve, reject) => {
       ipcRenderer.once('user-info', (event, data) => {
-        console.log("user info in preload",data);
+        //console.log("user info in preload",data);
         resolve(data);
       });
       ipcRenderer.send('show-user');
@@ -221,6 +221,15 @@ contextBridge.exposeInMainWorld('EmployeeeScreen', {
         resolve(data);
       });
       ipcRenderer.send('send-notice',{g});
+    });
+  },
+  getNotices:() => {
+    return new Promise((resolve, reject) => {
+      ipcRenderer.once('all-notice', (event, data) => {
+        console.log("in preload: ",data);
+        resolve(data);
+      });
+      ipcRenderer.send('notice');
     });
   },
 });

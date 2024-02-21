@@ -5,7 +5,8 @@ const salary   = document.getElementById('salary');
 const welcome  = document.getElementById('user2');
 const addnotice = document.getElementById('addNotice');
 const addpop = document.getElementById('addNoticePopup');
-//addNoticePopup
+const nBoard =  document.getElementById('noticeBoard');
+//noticeBoard
 
 fetchEmp().then((d)=>{
     username.innerText= d.firstName +" " +d.lastName;
@@ -14,7 +15,6 @@ fetchEmp().then((d)=>{
     login.innerText= formatTimeInHHmmss(d.Login_Time);   
     projects.innerText= "To be developed" ;
     
-    console.log("date before:",d.Login_Time);
 }).catch((error) => {
 console.error("Error fetching ID:", error);
 }); 
@@ -62,7 +62,15 @@ closePopup.addEventListener('click', function() {
     addpop.style.display = 'none';
 });
 
-
+getNotice().then((d)=>{
+    console.log("d:",d);
+    for(let i=0;i<d.length;i++){
+        const Ndiv= createTransferHtml(d[i]);
+        nBoard.appendChild(Ndiv);
+    }  
+}).catch((error) => {
+console.error("Error fetching ID:", error);
+}); 
 
 
 // Function to get new  emp screen from the main process
@@ -77,20 +85,20 @@ async function fetchEmp() {
     }
 }
 ///time conversion format
-function formatTimeInHHmmss(inputDate) {
+function formatTimeInHHmmss(inputDate, isGMT = true) {
     try {
         // Parse the input date string using the specified format
-        const dateObject = new Date(inputDate);
+        const dateObject = isGMT ? new Date(inputDate + ' GMT+0000') : new Date(inputDate);
 
         // Extract hours, minutes, and seconds from the date object
-        const hours = dateObject.getHours();
-        const minutes = dateObject.getMinutes();
-        const seconds = dateObject.getSeconds();
+        const hours = dateObject.getUTCHours()+ (isGMT ? 8 : 0);
+        const minutes = dateObject.getUTCMinutes();
+        const seconds = dateObject.getUTCSeconds();
 
         // Format the result in HH:MM:SS
         const result = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-        console.log("date result:",result);
+        //console.log("date result1:", result);
         return result;
     } catch (error) {
         return "Invalid date or format";
@@ -106,3 +114,57 @@ async function addNotice(n){
         console.error('Error in notice js :', error);
     }
 }
+
+//get notice
+async function getNotice(){
+    try {
+        const data = await EmployeeeScreen.getNotices();
+        console.log("notice:",data);    
+        return data;
+    } catch (error) {
+        console.error('Error fetching data from nmotice process:', error);
+    }
+}
+
+function createTransferHtml(d) {
+    // Create the outer div with class "transfer"
+    const transferDiv = document.createElement('div');
+    transferDiv.classList.add('transfer');
+
+    // Create the div with class "transfer-logo" and the image element
+    const logoDiv = document.createElement('div');
+    logoDiv.classList.add('transfer-logo');
+    const logoImg = document.createElement('img');
+    logoImg.src = '../Assets/Screenshot 2023-12-11 213210.png';
+    logoImg.alt = '';
+
+    // Append the image to the logo div
+    logoDiv.appendChild(logoImg);
+
+    // Create the dl element with class "transfer-details"
+    const detailsDL = document.createElement('dl');
+    detailsDL.classList.add('transfer-details');
+
+    // Create the div for the dt and dd elements
+    const detailsDiv = document.createElement('div');
+
+    // Create the dt element and set its text content
+    const dtElement = document.createElement('dt');
+    dtElement.textContent = d.firstName + " " + d.lastName;
+
+    // Create the dd element and set its text content
+    const ddElement = document.createElement('dd');
+    ddElement.textContent = d.Note;
+
+    // Append the dt and dd elements to the details div
+    detailsDiv.appendChild(dtElement);
+    detailsDiv.appendChild(ddElement);
+
+    // Append the logo div and details div to the transfer div
+    transferDiv.appendChild(logoDiv);
+    detailsDL.appendChild(detailsDiv);
+    transferDiv.appendChild(detailsDL);
+
+    return transferDiv;
+}
+

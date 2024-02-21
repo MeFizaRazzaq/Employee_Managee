@@ -198,13 +198,30 @@ async function executeQuery() {
         SELECT * FROM EmployeeAttendance WHERE Employee_Id = ${person.Employee_Id}
         `;
         console.log("att Id: ",emp.recordsets);
-        const time = await sql.query`
-        INSERT INTO EmployeeAttendance (Employee_Id, Date, Login_Time)
-        VALUES (${person.Employee_Id}, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME));
+        //checking if user has already login for today
+        // Get today's date
+        var login=false;
+        const today = new Date();
+        console.log("length:",emp.recordsets[0].length);
+        console.log("today:",today.getDate());
+        for(let i=0;i<emp.recordsets[0].length;i++){
+          console.log("record[",i,"]:",emp.recordset[i].Date.getDate());
+          if(emp.recordset[i].Date.getDate()+1==today.getDate()){
+            console.log("Login today:");
+            login=true;
+            break;
+          }
+        }
+        if(!login){
+          const time = await sql.query`
+            INSERT INTO EmployeeAttendance (Employee_Id, Date, Login_Time)
+            VALUES (${person.Employee_Id}, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME));
         `;
         console.log("after att Id: ",time.recordsets);
-  
+        }
         return person;
+        
+        
       }else if(result.recordset==""){
         console.error("INvalid Credential");
         return result.recordset;
@@ -1063,7 +1080,7 @@ LEFT JOIN
       try {
         setLogOut(v).then((r)=>{
           console.log("IN Main logout",r);
-          //dashwin.close();
+          dashwin.close();
         });
         
       } catch (error) {
@@ -1076,6 +1093,21 @@ LEFT JOIN
       try {
         notice(data.g,v.Employee_Id);
         
+      } catch (error) {
+        console.error('Error fetching data from main process:', error);
+      }
+    });
+    //getNotice
+    ipcMain.on('notice', (event,data) => {
+      //console.log("IN Main");
+      try {
+        const n=getNotice().then(result => {
+          console.log('notices:',result);
+          event.reply('all-notice', result);
+          })
+          .catch(error => {
+          console.error('Error:', error);
+          }); 
       } catch (error) {
         console.error('Error fetching data from main process:', error);
       }
@@ -1103,6 +1135,20 @@ async function notice(n,e){
     const result = await sql.query`
     INSERT INTO noticeBoard (Note, Employee_Id, dueDate)
     VALUES(${n.notice},${e},${n.DOB});
+    `;
+    return result.recordset;
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}
+
+//get notices
+async function getNotice(){
+  try {
+    const result = await sql.query`
+    SELECT * FROM noticeBoard n
+    LEFT JOIN Employees e ON
+    n.Employee_Id = e.Employee_Id
     `;
     return result.recordset;
   } catch (err) {
